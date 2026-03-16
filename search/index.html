@@ -405,7 +405,64 @@ function rowHtml(r,i){
 }
 function buildSummaryAndPagination(data){const total=data.total!=null?data.total:lastTotal;const limit=data.limit||parseInt(pageSizeSelect.value,10);const offset=data.offset!=null?data.offset:currentOffset;const hasTotal=total!=null;const pages=hasTotal?Math.ceil(total/limit):null;const cp=Math.floor(offset/limit)+1;const nextDisabled=hasTotal?offset+limit>=total:!data.next;let totalStr;if(total!=null){totalStr=total.toLocaleString()+' result'+(total!==1?'s':'')+(searchInput.value.trim()?' for "'+escapeHtml(searchInput.value.trim())+'"':'')+(data.total_capped?' (at least '+((data.total_cap!=null?data.total_cap:10000).toLocaleString())+' results; count capped for speed)':'');}else{totalStr=data.results.length+' result'+(data.results.length!==1?'s':'')+(searchInput.value.trim()?' for "'+escapeHtml(searchInput.value.trim())+'"':'')+' (counting…)';}const paginationHtml='<button type="button" id="page-prev" '+(offset===0?'disabled':'')+'>Previous</button><span class="page-info">Page '+cp+(pages!=null?' of '+pages:'')+' '+(hasTotal?'('+total.toLocaleString()+' total)':'')+'</span><button type="button" id="page-next" '+(nextDisabled?'disabled':'')+'>Next</button>';return{totalStr,paginationHtml,hasTotal,pages,cp,nextDisabled,offset,limit,total};}
 function applySummaryAndPagination(info){resultsSummary.textContent=info.totalStr;paginationEl.innerHTML=info.paginationHtml;paginationEl.querySelector('#page-prev')?.addEventListener('click',()=>{currentOffset=Math.max(0,info.offset-info.limit);fetchList();});paginationEl.querySelector('#page-next')?.addEventListener('click',()=>{currentOffset=info.offset+info.limit;fetchList();});}
-function fetchList(){if(!getToken()){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">Enter API token above to search</td></tr>';resultsSummary.textContent='';return;}const params=new URLSearchParams(getParams());resultsBody.innerHTML='<tr><td colspan="8">Loading…</td></tr>';resultsSummary.textContent=params.has('q')?'Loading… (text search can be slow)':'Loading…';paginationEl.innerHTML='';const hasSearch=params.has('q');if(hasSearch&&currentOffset===0){lastTotal=null;lastTotalCapped=false;lastTotalCap=null;}fetch(urlWithToken(SEARCH_API+'/list?'+params)).then(r=>{if(r.status===401){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">Invalid or missing token</td></tr>';resultsSummary.textContent='';return null;}return r.json();}).then(data=>{if(!data)return;if(data.error){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(data.error)+'</td></tr>';resultsSummary.textContent='';return;}currentTotal=data.total!=null?data.total:lastTotal;currentResults=data.results;if(data.results.length===0)resultsBody.innerHTML='<tr><td colspan="8">No results.</td></tr>';else{resultsBody.innerHTML=data.results.map((r,i)=>rowHtml(r,i)).join('');resultsBody.querySelectorAll('.expand-btn').forEach(btn=>{btn.onclick=()=>{const row=btn.closest('tr');const idx=parseInt(row.dataset.rowIndex,10);const r=currentResults[idx];if(!r)return;textOverlayTitle.innerHTML=escapeHtmlAllowMark(r.title||'(No title)');textOverlayMeta.textContent=[r.country,r.date,r.party].filter(Boolean).join(' · ');textOverlayBody.innerHTML=escapeHtmlAllowMark(r.text||'(No content)');textOverlay.hidden=false;};});}const merged={...data,total:data.total!=null?data.total:lastTotal,total_capped:data.total_capped||lastTotalCapped,total_cap:data.total_cap!=null?data.total_cap:lastTotalCap};applySummaryAndPagination(buildSummaryAndPagination(merged));if(hasSearch&&currentOffset===0){const countParams=new URLSearchParams(getParams());countParams.set('include_total','true');countParams.set('limit','1');countParams.set('offset','0');fetch(urlWithToken(SEARCH_API+'/list?'+countParams)).then(r=>r.json()).then(countData=>{if(!countData||countData.error)return;lastTotal=countData.total;lastTotalCapped=!!countData.total_capped;lastTotalCap=countData.total_cap!=null?countData.total_cap:null;applySummaryAndPagination(buildSummaryAndPagination({results:currentResults,offset:currentOffset,limit:data.limit,total:lastTotal,total_capped:lastTotalCapped,total_cap:lastTotalCap,next:countData.next}));});}}).catch(err=>{resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(err.message)+'</td></tr>';resultsSummary.textContent='';});}
+function fetchList(){if(!getToken()){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">Enter API token above to search</td></tr>';resultsSummary.textContent='';return;}const params=new URLSearchParams(getParams());resultsBody.innerHTML='<tr><td colspan="8">Loading…</td></tr>';resultsSummary.textContent=params.has('q')?'Loading… (text search can be slow)':'Loading…';paginationEl.innerHTML='';const hasSearch=params.has('q');if(hasSearch&&currentOffset===0){lastTotal=null;lastTotalCapped=false;lastTotalCap=null;}fetch(urlWithToken(SEARCH_API+'/list?'+params)).then(r=>{if(r.status===401){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">Invalid or missing token</td></tr>';resultsSummary.textContent='';return null;}return r.json();}).then(data=>{if(!data)return;if(data.error){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(data.error)+'</td></tr>';resultsSummary.textContent='';return;}currentTotal=data.total!=null?data.total:lastTotal;currentResults=data.results;if(data.results.length===0)resultsBody.innerHTML='<tr><td colspan="8">No results.</td></tr>';else{resultsBody.innerHTML=data.results.map((r,i)=>rowHtml(r,i)).join('');resultsBody.querySelectorAll('.expand-btn').forEach(btn=>{btn.onclick=()=>{const row=btn.closest('tr');const idx=parseInt(row.dataset.rowIndex,10);const r=currentResults[idx];if(!r)return;
+
+textOverlayTitle.innerHTML=escapeHtmlAllowMark(r.title||'(No title)');
+
+const countryName=r.country||'';
+const partyAbbrev=r.party||'';
+const partyFullName=r.name_english||'';
+const parlgovId=r.parlgov_party_id;
+const parlgovCode=PARLGOV_COUNTRY_CODES[countryName];
+
+let countryCell='';
+if(countryName&&parlgovCode){
+  const countryUrl='https://parlgov.fly.dev/data/parties/'+parlgovCode+'/';
+  countryCell='<a href="'+escapeHtml(countryUrl)+'" target="_blank" rel="noopener">'+escapeHtml(countryName)+'</a>';
+}else{
+  countryCell=escapeHtml(countryName);
+}
+
+let partyLabel=partyAbbrev;
+if(partyFullName){
+  partyLabel=partyAbbrev?(partyAbbrev+' ('+partyFullName+')'):partyFullName;
+}
+
+let partyCellMeta='';
+if(partyLabel){
+  if(parlgovCode&&parlgovId){
+    const partyUrl='https://parlgov.fly.dev/data/parties/'+parlgovCode+'/'+encodeURIComponent(parlgovId)+'/';
+    partyCellMeta='<a href="'+escapeHtml(partyUrl)+'" target="_blank" rel="noopener">'+escapeHtmlAllowMark(partyLabel)+'</a>';
+  }else{
+    partyCellMeta=escapeHtmlAllowMark(partyLabel);
+  }
+}
+
+const metaParts=[];
+if(countryCell)metaParts.push(countryCell);
+if(r.date)metaParts.push(escapeHtml(r.date));
+if(partyCellMeta)metaParts.push(partyCellMeta);
+
+let metaHtml=metaParts.join(' · ');
+
+if(r.wikipedia){
+  metaHtml+='<br><a href="'+escapeHtml(r.wikipedia)+'" target="_blank" rel="noopener">Wikipedia</a>';
+}
+
+if(r.CAP_issue1){
+  metaHtml+='<br>CAP issue: <a href="https://huggingface.co/z-dickson/xlm-roberta-large-political-issues" target="_blank" rel="noopener">'+escapeHtml(r.CAP_issue1)+'</a>';
+}
+
+if(r.url){
+  metaHtml+='<br>URL: <a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener">'+escapeHtml(r.url)+'</a>';
+}
+
+metaHtml+='<br>Date accessed: ';
+
+textOverlayMeta.innerHTML=metaHtml;
+textOverlayBody.innerHTML=escapeHtmlAllowMark(r.text||'(No content)');
+textOverlay.hidden=false;
+};});}const merged={...data,total:data.total!=null?data.total:lastTotal,total_capped:data.total_capped||lastTotalCapped,total_cap:data.total_cap!=null?data.total_cap:lastTotalCap};applySummaryAndPagination(buildSummaryAndPagination(merged));if(hasSearch&&currentOffset===0){const countParams=new URLSearchParams(getParams());countParams.set('include_total','true');countParams.set('limit','1');countParams.set('offset','0');fetch(urlWithToken(SEARCH_API+'/list?'+countParams)).then(r=>r.json()).then(countData=>{if(!countData||countData.error)return;lastTotal=countData.total;lastTotalCapped=!!countData.total_capped;lastTotalCap=countData.total_cap!=null?countData.total_cap:null;applySummaryAndPagination(buildSummaryAndPagination({results:currentResults,offset:currentOffset,limit:data.limit,total:lastTotal,total_capped:lastTotalCapped,total_cap:lastTotalCap,next:countData.next}));});}}).catch(err=>{resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(err.message)+'</td></tr>';resultsSummary.textContent='';});}
 function triggerSearch(){currentOffset=0;fetchList();}
 countrySelect.onchange=()=>{populatePartyDropdown();if(window.updateMapSelection)window.updateMapSelection();};
 issueSelect.onchange=()=>{updateIssueTilesSelection();};
