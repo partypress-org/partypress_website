@@ -19,6 +19,7 @@
 <body data-api-url="https://api.partypress.org">
   <header class="site-header">
     <a href="/" class="logo">partypress.org</a>
+    <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener">GitHub</a>
   </header>
 
   <main class="search-main">
@@ -217,7 +218,7 @@
   </div>
 
   <footer class="site-footer">
-    <p><a href="/">← Back to partypress.org</a> · <a href="/api/" id="api-docs-page-link">API</a> · <a href="https://github.com/partypress-org/partypress_website/issues" target="_blank" rel="noopener">Report an issue</a></p>
+    <p><a href="/">← Back to partypress.org</a> · <a href="/api/" id="api-docs-page-link">API</a> · <a href="https://github.com/partypress-org" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/partypress-org/partypress_website/issues" target="_blank" rel="noopener">Report an issue</a></p>
   </footer>
 
   <script>
@@ -256,6 +257,45 @@ let lastTotal = null, lastTotalCapped = false, lastTotalCap = null;
 let allPartyOptions = [], fallbackParties = [];
 const TOKEN_KEY = 'partypress_api_token';
 const MAP_NAME_TO_API = { 'Republic of Moldova':'Moldova', 'The former Yugoslav Republic of Macedonia':'North Macedonia', 'United Kingdom':'UK' };
+const PARLGOV_COUNTRY_CODES = {
+  'Australia':'aus',
+  'Austria':'aut',
+  'Belgium':'bel',
+  'Bulgaria':'bgr',
+  'Canada':'can',
+  'Croatia':'hrv',
+  'Cyprus':'cyp',
+  'Czech Republic':'cze',
+  'Denmark':'dnk',
+  'Estonia':'est',
+  'Finland':'fin',
+  'France':'fra',
+  'Germany':'deu',
+  'Greece':'grc',
+  'Hungary':'hun',
+  'Iceland':'isl',
+  'Ireland':'irl',
+  'Israel':'isr',
+  'Italy':'ita',
+  'Japan':'jpn',
+  'Latvia':'lva',
+  'Lithuania':'ltu',
+  'Luxembourg':'lux',
+  'Malta':'mlt',
+  'Netherlands':'nld',
+  'New Zealand':'nzl',
+  'Norway':'nor',
+  'Poland':'pol',
+  'Portugal':'prt',
+  'Romania':'rou',
+  'Slovakia':'svk',
+  'Slovenia':'svn',
+  'Spain':'esp',
+  'Sweden':'swe',
+  'Switzerland':'che',
+  'Turkey':'tur',
+  'United Kingdom':'gbr'
+};
 const ISSUE_SYMBOLS = { 'macroeconomics':'📈','civil rights':'⚖️','healthcare':'🏥','agriculture':'🌾','labor':'👷','education':'📚','environment and climate':'🌍','energy':'⚡','immigration':'🛂','transportation':'🚄','law and crime':'🔒','social welfare':'🤝','housing':'🏘️','domestic commerce':'💼','defense':'🛡️','technology':'💻','foreign trade':'📦','international affairs':'🌐','government operations':'🏛️','public lands':'🏞️','culture':'🎭' };
 let _europeSvgText = null, _apiCountries = null, _countryMapInited = false;
 function initIssueTiles(issues){
@@ -328,7 +368,40 @@ function addOption(s,v,t){const o=document.createElement('option');o.value=v;o.t
 function getParams(){const p={limit:parseInt(pageSizeSelect.value,10),offset:currentOffset,sort_by:sortBySelect.value,sort_dir:sortDirSelect.value};if(searchInput.value.trim()){p.q=searchInput.value.trim();p.include_total='false';}if(partySelect.value&&partySelect.value.includes('|')){const parts=partySelect.value.split('|');if(parts.length>=2){p.country=parts[0];p.party=parts.slice(1).join('|');}}else{if(countrySelect.value)p.country=countrySelect.value;if(partySelect.value)p.party=partySelect.value;}if(issueSelect.value)p.issue=issueSelect.value;if(dateFromInput.value)p.date_from=dateFromInput.value;if(dateToInput.value)p.date_to=dateToInput.value;return p;}
 function escapeHtml(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeHtmlAllowMark(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;let h=d.innerHTML;h=h.replace(/&lt;mark&gt;/gi,'<mark>').replace(/&lt;\/mark&gt;/gi,'</mark>');return h;}
-function rowHtml(r,i){const t=r.title||'(No title)';const tl=r.url?'<a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener">'+escapeHtmlAllowMark(t)+'</a>':escapeHtmlAllowMark(t);const sn=r.search_snippet?'<div class="search-snippet">'+escapeHtmlAllowMark(r.search_snippet)+'</div>':'';return '<tr data-row-index="'+i+'"><td>'+escapeHtml(r.country||'')+'</td><td>'+escapeHtml(r.date||'')+'</td><td>'+escapeHtml(r.party||'')+'</td><td>'+escapeHtml(r.CAP_issue1||'')+'</td><td class="title-cell">'+tl+sn+'</td><td><button type="button" class="expand-btn">Show text</button></td></tr>';}
+function rowHtml(r,i){
+  const t=r.title||'(No title)';
+  const tl=r.url
+    ? '<a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener" class="title-link">'+escapeHtmlAllowMark(t)+'</a>'
+    : '<span class="title-link">'+escapeHtmlAllowMark(t)+'</span>';
+  const countryName = r.country || '';
+  const partyName = r.party || '';
+  const parlgovId = r.parlgov_party_id;
+  const parlgovCode = PARLGOV_COUNTRY_CODES[countryName];
+
+  let countryCell = '';
+  if (countryName && parlgovCode) {
+    const countryUrl = 'https://parlgov.fly.dev/data/parties/' + parlgovCode + '/';
+    countryCell = '<a href="'+escapeHtml(countryUrl)+'" target="_blank" rel="noopener">'+escapeHtml(countryName)+'</a>';
+  } else {
+    countryCell = escapeHtml(countryName);
+  }
+
+  let partyCell = '';
+  if (partyName) {
+    if (parlgovCode && parlgovId) {
+      const url = 'https://parlgov.fly.dev/data/parties/' + parlgovCode + '/' + encodeURIComponent(parlgovId) + '/';
+      partyCell = '<a href="'+escapeHtml(url)+'" target="_blank" rel="noopener">'+escapeHtmlAllowMark(partyName)+'</a>';
+    } else {
+      partyCell = escapeHtmlAllowMark(partyName);
+    }
+  }
+
+  const sn = r.search_snippet
+    ? '<div class="search-snippet">'+escapeHtmlAllowMark(r.search_snippet)+'</div>'
+    : '';
+
+  return '<tr data-row-index="'+i+'"><td>'+countryCell+'</td><td>'+escapeHtml(r.date||'')+'</td><td>'+partyCell+'</td><td>'+escapeHtml(r.CAP_issue1||'')+'</td><td class="title-cell">'+tl+sn+'</td><td><button type="button" class="expand-btn">Show text</button></td></tr>';
+}
 function buildSummaryAndPagination(data){const total=data.total!=null?data.total:lastTotal;const limit=data.limit||parseInt(pageSizeSelect.value,10);const offset=data.offset!=null?data.offset:currentOffset;const hasTotal=total!=null;const pages=hasTotal?Math.ceil(total/limit):null;const cp=Math.floor(offset/limit)+1;const nextDisabled=hasTotal?offset+limit>=total:!data.next;let totalStr;if(total!=null){totalStr=total.toLocaleString()+' result'+(total!==1?'s':'')+(searchInput.value.trim()?' for "'+escapeHtml(searchInput.value.trim())+'"':'')+(data.total_capped?' (at least '+((data.total_cap!=null?data.total_cap:10000).toLocaleString())+' results; count capped for speed)':'');}else{totalStr=data.results.length+' result'+(data.results.length!==1?'s':'')+(searchInput.value.trim()?' for "'+escapeHtml(searchInput.value.trim())+'"':'')+' (counting…)';}const paginationHtml='<button type="button" id="page-prev" '+(offset===0?'disabled':'')+'>Previous</button><span class="page-info">Page '+cp+(pages!=null?' of '+pages:'')+' '+(hasTotal?'('+total.toLocaleString()+' total)':'')+'</span><button type="button" id="page-next" '+(nextDisabled?'disabled':'')+'>Next</button>';return{totalStr,paginationHtml,hasTotal,pages,cp,nextDisabled,offset,limit,total};}
 function applySummaryAndPagination(info){resultsSummary.textContent=info.totalStr;paginationEl.innerHTML=info.paginationHtml;paginationEl.querySelector('#page-prev')?.addEventListener('click',()=>{currentOffset=Math.max(0,info.offset-info.limit);fetchList();});paginationEl.querySelector('#page-next')?.addEventListener('click',()=>{currentOffset=info.offset+info.limit;fetchList();});}
 function fetchList(){if(!getToken()){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">Enter API token above to search</td></tr>';resultsSummary.textContent='';return;}const params=new URLSearchParams(getParams());resultsBody.innerHTML='<tr><td colspan="8">Loading…</td></tr>';resultsSummary.textContent=params.has('q')?'Loading… (text search can be slow)':'Loading…';paginationEl.innerHTML='';const hasSearch=params.has('q');if(hasSearch&&currentOffset===0){lastTotal=null;lastTotalCapped=false;lastTotalCap=null;}fetch(urlWithToken(SEARCH_API+'/list?'+params)).then(r=>{if(r.status===401){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">Invalid or missing token</td></tr>';resultsSummary.textContent='';return null;}return r.json();}).then(data=>{if(!data)return;if(data.error){resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(data.error)+'</td></tr>';resultsSummary.textContent='';return;}currentTotal=data.total!=null?data.total:lastTotal;currentResults=data.results;if(data.results.length===0)resultsBody.innerHTML='<tr><td colspan="8">No results.</td></tr>';else{resultsBody.innerHTML=data.results.map((r,i)=>rowHtml(r,i)).join('');resultsBody.querySelectorAll('.expand-btn').forEach(btn=>{btn.onclick=()=>{const row=btn.closest('tr');const idx=parseInt(row.dataset.rowIndex,10);const r=currentResults[idx];if(!r)return;textOverlayTitle.innerHTML=escapeHtmlAllowMark(r.title||'(No title)');textOverlayMeta.textContent=[r.country,r.date,r.party].filter(Boolean).join(' · ');textOverlayBody.innerHTML=escapeHtmlAllowMark(r.text||'(No content)');textOverlay.hidden=false;};});}const merged={...data,total:data.total!=null?data.total:lastTotal,total_capped:data.total_capped||lastTotalCapped,total_cap:data.total_cap!=null?data.total_cap:lastTotalCap};applySummaryAndPagination(buildSummaryAndPagination(merged));if(hasSearch&&currentOffset===0){const countParams=new URLSearchParams(getParams());countParams.set('include_total','true');countParams.set('limit','1');countParams.set('offset','0');fetch(urlWithToken(SEARCH_API+'/list?'+countParams)).then(r=>r.json()).then(countData=>{if(!countData||countData.error)return;lastTotal=countData.total;lastTotalCapped=!!countData.total_capped;lastTotalCap=countData.total_cap!=null?countData.total_cap:null;applySummaryAndPagination(buildSummaryAndPagination({results:currentResults,offset:currentOffset,limit:data.limit,total:lastTotal,total_capped:lastTotalCapped,total_cap:lastTotalCap,next:countData.next}));});}}).catch(err=>{resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(err.message)+'</td></tr>';resultsSummary.textContent='';});}
@@ -346,6 +419,25 @@ textOverlayClose.onclick=()=>{textOverlay.hidden=true;};
 textOverlay.onclick=e=>{if(e.target===textOverlay)textOverlay.hidden=true;};
 if(apiDocsLink)apiDocsLink.href=SEARCH_API+'/docs';
 if(getToken())fetchList();else resultsBody.innerHTML='<tr><td colspan="8" class="api-status">Enter API token above to search</td></tr>';
+document.addEventListener('keydown',function(e){
+  const target=e.target;
+  const tag=(target&&target.tagName)||'';
+  const isEditable=target&&((target.isContentEditable)||tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT');
+  if(isEditable)return;
+  if(e.key==='ArrowRight'||e.key==='Right'){
+    const next=document.getElementById('page-next');
+    if(next&&!next.disabled){
+      e.preventDefault();
+      next.click();
+    }
+  }else if(e.key==='ArrowLeft'||e.key==='Left'){
+    const prev=document.getElementById('page-prev');
+    if(prev&&!prev.disabled){
+      e.preventDefault();
+      prev.click();
+    }
+  }
+});
 })();
   </script>
 </body>

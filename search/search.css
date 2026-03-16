@@ -348,6 +348,9 @@
 .results-table .title-cell {
   word-wrap: break-word;
   overflow-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .results-table .title-cell a {
@@ -358,6 +361,14 @@
 .results-table .title-cell a:hover {
   color: var(--accent);
   text-decoration: underline;
+}
+
+.results-table .title-cell .title-link {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .results-table .title-cell .title-link {

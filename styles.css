@@ -35,8 +35,23 @@ body {
 }
 
 .site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1.5rem 2rem;
   border-bottom: 1px solid var(--border);
+}
+
+.header-github {
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.header-github:hover,
+.header-github:focus {
+  color: var(--text);
+  text-decoration: underline;
 }
 
 /* Header logo link: no underline, looks like text/brand */
