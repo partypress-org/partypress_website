@@ -255,6 +255,27 @@ const textOverlayBody = document.getElementById('text-overlay-body');
 let currentOffset = 0, currentTotal = 0, currentResults = [];
 let lastTotal = null, lastTotalCapped = false, lastTotalCap = null;
 let allPartyOptions = [], fallbackParties = [];
+
+function getParlgovInfo(countryName, partyLabel){
+  if(!countryName || !partyLabel || !allPartyOptions.length)return {id:null, fullName:null};
+  const normLabel = (partyLabel || '').toLowerCase();
+  const match = allPartyOptions.find(o=>{
+    if(o.country !== countryName) return false;
+    const candidates = [
+      o.abbr,
+      o.abbreviation,
+      o.short_name,
+      o.short,
+      o.party,
+      o.name_english,
+      o.name
+    ].filter(Boolean).map(x=>String(x).toLowerCase());
+    return candidates.includes(normLabel);
+  });
+  if(!match) return {id:null, fullName:null};
+  const fullName = match.name_english || match.name || match.party || partyLabel;
+  return {id: match.parlgov_party_id || match.parlgov_id || null, fullName};
+}
 const TOKEN_KEY = 'partypress_api_token';
 const MAP_NAME_TO_API = { 'Republic of Moldova':'Moldova', 'The former Yugoslav Republic of Macedonia':'North Macedonia', 'United Kingdom':'UK' };
 const PARLGOV_COUNTRY_CODES = {
@@ -403,7 +424,7 @@ function rowHtml(r,i){
     : '<span class="title-link">'+escapeHtmlAllowMark(t)+'</span>';
   const countryName = r.country || '';
   const partyName = r.party || '';
-  const parlgovId = r.parlgov_party_id;
+  const {id: parlgovId, fullName: partyFullName} = getParlgovInfo(countryName, partyName);
   const parlgovCode = PARLGOV_COUNTRY_CODES[countryName];
 
   let countryCell = '';
@@ -416,11 +437,14 @@ function rowHtml(r,i){
 
   let partyCell = '';
   if (partyName) {
+    const label = partyFullName && partyFullName !== partyName
+      ? partyName + ' (' + partyFullName + ')'
+      : partyName;
     if (parlgovCode && parlgovId) {
       const url = 'https://parlgov.fly.dev/data/parties/' + parlgovCode + '/' + encodeURIComponent(parlgovId) + '/';
-      partyCell = '<a href="'+escapeHtml(url)+'" target="_blank" rel="noopener">'+escapeHtmlAllowMark(partyName)+'</a>';
+      partyCell = '<a href="'+escapeHtml(url)+'" target="_blank" rel="noopener">'+escapeHtmlAllowMark(label)+'</a>';
     } else {
-      partyCell = escapeHtmlAllowMark(partyName);
+      partyCell = escapeHtmlAllowMark(label);
     }
   }
 
@@ -438,8 +462,7 @@ textOverlayTitle.innerHTML=escapeHtmlAllowMark(r.title||'(No title)');
 
 const countryName=r.country||'';
 const partyAbbrev=r.party||'';
-const partyFullName=r.name_english||'';
-const parlgovId=r.parlgov_party_id;
+const {id: parlgovId, fullName: partyFullName}=getParlgovInfo(countryName, partyAbbrev);
 const parlgovCode=PARLGOV_COUNTRY_CODES[countryName];
 
 let countryCell='';
