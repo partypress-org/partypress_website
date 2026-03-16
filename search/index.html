@@ -392,6 +392,9 @@ function rowHtml(r,i){
     if (parlgovCode && parlgovId) {
       const url = 'https://parlgov.fly.dev/data/parties/' + parlgovCode + '/' + encodeURIComponent(parlgovId) + '/';
       partyCell = '<a href="'+escapeHtml(url)+'" target="_blank" rel="noopener">'+escapeHtmlAllowMark(partyName)+'</a>';
+    } else if (parlgovCode) {
+      const fallbackUrl = 'https://parlgov.fly.dev/data/parties/' + parlgovCode + '/';
+      partyCell = '<a href="'+escapeHtml(fallbackUrl)+'" target="_blank" rel="noopener">'+escapeHtmlAllowMark(partyName)+'</a>';
     } else {
       partyCell = escapeHtmlAllowMark(partyName);
     }
