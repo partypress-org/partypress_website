@@ -75,8 +75,8 @@ body {
 .logo-img-frame {
   position: relative;
   flex-shrink: 0;
-  width: 118px;
-  height: 38px;
+  width: 178px;
+  height: 58px;
   overflow: hidden;
 }
 
@@ -134,8 +134,8 @@ body {
   margin: 0;
   display: flex;
   align-items: center;
-  flex: 0 1 auto;
-  min-width: 0;
+  flex: 0 0 auto;
+  min-width: auto;
   max-width: 100%;
 }
 
@@ -143,11 +143,10 @@ body {
   position: relative;
   display: block;
   box-sizing: border-box;
-  width: 100%;
-  max-width: 320px;
-  height: 92px;
+  width: 480px;
+  max-width: 100%;
+  height: 138px;
   flex-shrink: 1;
-  min-width: 0;
   overflow: hidden;
   line-height: 0;
 }
@@ -157,6 +156,7 @@ body {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 1;
   display: block;
   width: auto;
   height: auto;
@@ -177,9 +177,9 @@ body {
   position: relative;
   display: block;
   box-sizing: border-box;
-  width: 165px;
+  width: 248px;
   max-width: 100%;
-  height: 56px;
+  height: 84px;
   overflow: hidden;
   line-height: 0;
 }
