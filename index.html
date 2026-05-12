@@ -15,13 +15,25 @@
 </head>
 <body>
   <header class="site-header">
-    <a href="/" class="logo">partypress.org</a>
+    <a href="/" class="logo">
+      <span class="logo-img-frame" aria-hidden="true">
+        <img src="img/partypress.png" alt="" class="logo-img" decoding="async">
+      </span>
+      <span>partypress<span class="tld">.org</span></span>
+    </a>
     <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener">GitHub</a>
   </header>
 
   <main>
     <section class="hero">
-      <h1>PARTYPRESS v2</h1>
+      <div class="hero-title-row">
+        <p class="hero-brand">
+          <span class="hero-logo-frame">
+            <img src="img/partypress.png" alt="PARTYPRESS" class="hero-logo" decoding="async">
+          </span>
+        </p>
+        <h1>PARTYPRESS v2</h1>
+      </div>
       <p class="tagline">Coming soon.</p>
       <p class="sub">A large-scale, cross-national corpus of party press releases—with LLM-assisted tools to explore who responds to whom, and a public web app for researchers, journalists, and citizens.</p>
     </section>
@@ -40,20 +52,28 @@
       <h2>PARTYPRESS v1</h2>
       <p class="foundation-intro">PARTYPRESS v2 builds on the <strong>PARTYPRESS Database</strong> and related work:</p>
       <div class="paper-card">
-        <h3 class="paper-title"><a href="https://journals.sagepub.com/doi/10.1177/20531680231183512">The PARTYPRESS Database</a></h3>
-        <p class="paper-authors"><a href="https://corneliuserfort.de/">Cornelius Erfort</a>, <a href="http://lukas-stoetzer.org/">Lukas F. Stoetzer</a>, and <a href="http://heike-kluever.com/">Heike Klüver</a></p>
-        <p class="paper-venue">Research and Politics, 2023</p>
+        <div class="paper-card-head">
+          <p class="foundation-v1-brand">
+            <span class="foundation-v1-logo-frame">
+              <img src="img/partypress_v1.png" alt="PARTYPRESS Database (v1)" class="foundation-v1-logo" decoding="async">
+            </span>
+          </p>
+          <div class="paper-card-meta">
+            <h3 class="paper-title"><a href="https://journals.sagepub.com/doi/10.1177/20531680231183512">The PARTYPRESS Database</a></h3>
+            <p class="paper-authors"><a href="https://corneliuserfort.de/">Cornelius Erfort</a>, <a href="http://lukas-stoetzer.org/">Lukas F. Stoetzer</a>, and <a href="http://heike-kluever.com/">Heike Klüver</a></p>
+            <p class="paper-venue">Research and Politics, 2023</p>
+          </div>
+        </div>
         <p class="paper-desc">Large-scale collection of party press releases from European parties—the basis for studying agenda-setting and responsiveness.</p>
         <div class="paper-links">
           <a class="paper-link-btn" href="https://journals.sagepub.com/doi/10.1177/20531680231183512" target="_blank" rel="noopener">Article</a>
           <a class="paper-link-btn" href="https://github.com/cornelius-erfort/partypress" target="_blank" rel="noopener">GitHub</a>
           <a class="paper-link-btn" href="https://doi.org/10.7910/DVN/OINX7Q" target="_blank" rel="noopener">Dataverse</a>
           <a class="paper-link-btn" href="https://huggingface.co/partypress/partypress-multilingual" target="_blank" rel="noopener">Hugging Face</a>
-        </div>
-        <div class="bibtex-wrap">
-          <button type="button" class="bibtex-toggle" aria-expanded="false" data-bibtex="erfort_stoetzer_kluver_2023">BibTeX</button>
-          <div id="bibtex-erfort_stoetzer_kluver_2023" class="bibtex-block" hidden>
-            <pre class="bibtex-code">@article{erfort_stoetzer_kluver_2023,
+          <div class="bibtex-wrap">
+            <button type="button" class="bibtex-toggle" aria-expanded="false" data-bibtex="erfort_stoetzer_kluver_2023">BibTeX</button>
+            <div id="bibtex-erfort_stoetzer_kluver_2023" class="bibtex-block" hidden>
+              <pre class="bibtex-code">@article{erfort_stoetzer_kluver_2023,
   author = {Erfort, Cornelius and Stoetzer, Lukas F. and Kl{\"u}ver, Heike},
   title = {The {PARTYPRESS} Database},
   journal = {Research and Politics},
@@ -63,7 +83,8 @@
   doi = {10.1177/20531680231183512},
   url = {https://doi.org/10.1177/20531680231183512}
 }</pre>
-            <button type="button" class="bibtex-copy">Copy</button>
+              <button type="button" class="bibtex-copy">Copy</button>
+            </div>
           </div>
         </div>
       </div>
