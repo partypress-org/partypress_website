@@ -42,9 +42,29 @@ let currentOffset = 0;
 let currentTotal = 0;
 let currentResults = [];  // Store for expand (full text)
 
+function normalizeToken(raw) {
+  const s = (raw || '').trim();
+  if (!s) return '';
+  const fromUrl = s.match(/[?&]token=(pp_[A-Za-z0-9_-]+)/);
+  if (fromUrl) return fromUrl[1];
+  if (/^https?:\/\//.test(s)) {
+    try {
+      const t = new URL(s).searchParams.get('token');
+      if (t) return t;
+    } catch (_) { /* ignore */ }
+  }
+  return s;
+}
+
 function getToken() {
   const el = document.getElementById('api-token');
-  return (el && el.value && el.value.trim()) ? el.value.trim() : '';
+  return el ? normalizeToken(el.value) : '';
+}
+
+function resultTotal(data, offset) {
+  if (data.total != null) return data.total;
+  const n = data.results ? data.results.length : 0;
+  return data.next ? offset + n + 1 : offset + n;
 }
 function appendToken(url) {
   const t = getToken();
@@ -105,7 +125,14 @@ function fetchList() {
   const timeout = setTimeout(() => ctrl.abort(), hasQuery ? 90000 : 30000);  // 90s for search, 30s for list
 
   fetch(url, { signal: ctrl.signal })
-    .then(r => { clearTimeout(timeout); return r.json(); })
+    .then(r => {
+      clearTimeout(timeout);
+      if (r.status === 401) {
+        throw new Error('Invalid API token — paste only the pp_… value, not the full health URL.');
+      }
+      if (!r.ok) throw new Error(`API error (${r.status})`);
+      return r.json();
+    })
     .then(data => {
       if (data.error) {
         resultsBody.innerHTML = `<tr><td colspan="8" class="api-status error">${escapeHtml(data.error)}</td></tr>`;
@@ -113,18 +140,20 @@ function fetchList() {
         return;
       }
 
-      currentTotal = data.total != null ? data.total : (data.next ? currentOffset + data.results.length + 1 : currentOffset + (data.results ? data.results.length : 0));
-      currentResults = data.results;
-      resultsSummary.textContent = `${data.total.toLocaleString()} result${data.total !== 1 ? 's' : ''}${searchInput.value.trim() ? ` for "${escapeHtml(searchInput.value.trim())}"` : ''}`;
+      const total = resultTotal(data, data.offset ?? currentOffset);
+      currentTotal = total;
+      currentResults = data.results || [];
+      const totalLabel = data.total_exact === false ? `${total.toLocaleString()}+` : total.toLocaleString();
+      resultsSummary.textContent = `${totalLabel} result${total !== 1 ? 's' : ''}${searchInput.value.trim() ? ` for "${escapeHtml(searchInput.value.trim())}"` : ''}`;
 
-      if (data.results.length === 0) {
+      if (currentResults.length === 0) {
         resultsBody.innerHTML = '<tr><td colspan="8">No results.</td></tr>';
       } else {
-        resultsBody.innerHTML = data.results.map((r, i) => rowHtml(r, i)).join('');
+        resultsBody.innerHTML = currentResults.map((r, i) => rowHtml(r, i)).join('');
         attachExpandHandlers();
       }
 
-      renderPagination(data.total, data.limit, data.offset);
+      renderPagination(total, data.limit, data.offset);
     })
     .catch(err => {
       clearTimeout(timeout);
@@ -170,6 +199,10 @@ function attachExpandHandlers() {
 }
 
 function renderPagination(total, limit, offset) {
+  if (total == null || !limit) {
+    paginationEl.innerHTML = '';
+    return;
+  }
   const pages = Math.ceil(total / limit);
   const currentPage = Math.floor(offset / limit) + 1;
   let html = '';
