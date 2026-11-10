@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard — PARTYPRESS</title>
+  <meta name="description" content="Explore issue attention in party press releases across Europe and download the PARTYPRESS data from Dataverse.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon-180x180.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<!--
+  DATAVERSE: set data-dataverse to the dataset DOI link once it is minted.
+  While it contains "XXXXXX" the page shows a "DOI pending" note next to each link.
+-->
+<body data-dataverse="https://doi.org/10.7910/DVN/XXXXXX">
+  <header class="site-header">
+    <a href="/" class="logo">
+      <span class="logo-img-frame" aria-hidden="true">
+        <img src="../img/partypress.png" alt="" class="logo-img" decoding="async">
+      </span>
+      <span>partypress<span class="tld">.org</span></span>
+    </a>
+    <nav class="header-nav" aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/dashboard/" aria-current="page">Dashboard</a>
+      <a href="#download">Download</a>
+      <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <main class="dash-main">
+    <section class="dash-hero">
+      <h1>PARTYPRESS dashboard</h1>
+      <p class="dash-lead">What European parties talk about between elections. Every sentence of every press release is coded into one of 21 Comparative Agendas Project topics. Explore party issue attention below, then download the full data from Dataverse.</p>
+      <div class="dash-cta">
+        <a class="btn-primary dataverse-link" href="#download">Download the data on Dataverse</a>
+        <a class="btn-secondary" href="#explore">Explore issue attention</a>
+      </div>
+      <p class="dv-pending" hidden>The Dataverse DOI will be added when the dataset is published.</p>
+    </section>
+
+    <section class="stat-row" aria-label="Corpus at a glance">
+      <div class="stat"><span class="stat-value" id="stat-docs">–</span><span class="stat-label">press releases</span></div>
+      <div class="stat"><span class="stat-value" id="stat-sents">–</span><span class="stat-label">coded sentences</span></div>
+      <div class="stat"><span class="stat-value" id="stat-parties">–</span><span class="stat-label">parties</span></div>
+      <div class="stat"><span class="stat-value" id="stat-countries">–</span><span class="stat-label">countries</span></div>
+      <div class="stat"><span class="stat-value" id="stat-span">–</span><span class="stat-label">coverage</span></div>
+    </section>
+
+    <section id="explore" class="dash-section">
+      <h2>Issue attention over time</h2>
+      <p class="section-intro">Share of a party's policy content given to each topic: the average, across the party's releases in each period, of each release's share of policy sentences on that topic. Bands show 95% confidence intervals.</p>
+
+      <div class="filter-row" role="group" aria-label="Chart filters">
+        <label class="ctl">
+          <span>Compare</span>
+          <select id="f-mode">
+            <option value="topics">Topics for one party</option>
+            <option value="parties">Parties on one topic</option>
+          </select>
+        </label>
+        <label class="ctl">
+          <span>Country</span>
+          <select id="f-country"></select>
+        </label>
+        <label class="ctl" id="ctl-party">
+          <span>Party</span>
+          <select id="f-party"></select>
+        </label>
+        <label class="ctl" id="ctl-topic" hidden>
+          <span>Topic</span>
+          <select id="f-topic"></select>
+        </label>
+        <label class="ctl">
+          <span>Period</span>
+          <select id="f-res">
+            <option value="quarter">Quarter</option>
+            <option value="month">Month</option>
+          </select>
+        </label>
+        <label class="ctl">
+          <span>Min. releases per period</span>
+          <select id="f-min">
+            <option value="1">1</option>
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="chips-wrap">
+        <p class="chips-label" id="chips-label">Topics (up to 5)</p>
+        <div class="chips" id="chips" role="group" aria-labelledby="chips-label"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="legend" id="legend" aria-label="Legend"></div>
+        <div class="chart" id="chart" role="img" aria-label="Line chart of issue attention"></div>
+        <p class="chart-sub-title">Releases per period</p>
+        <div class="chart chart-volume" id="chart-volume" role="img" aria-label="Bar chart of releases per period"></div>
+        <div class="tooltip" id="tooltip" role="status" hidden></div>
+        <p class="chart-note" id="chart-note"></p>
+        <div class="chart-actions">
+          <button type="button" class="btn-small" id="btn-table" aria-expanded="false">Show table</button>
+          <button type="button" class="btn-small" id="btn-csv">Download chart data (CSV)</button>
+        </div>
+        <div class="table-wrap" id="table-wrap" hidden></div>
+      </div>
+      <p class="fine">Periods with fewer releases than the minimum are left blank, as are periods without any releases; treat them as missing, not as zero attention. A party's share in a period with only a few releases is noisy, which is why quarters with at least 10 releases are the default.</p>
+    </section>
+
+    <section class="dash-section">
+      <h2>Coverage</h2>
+      <p class="section-intro">Press releases per country. Coverage starts later in some countries and is sparse after December 2025; several archives end in December 2022.</p>
+      <div class="coverage-grid">
+        <div class="coverage-list" id="coverage-list"></div>
+        <div>
+          <h3 class="h3">Releases per year</h3>
+          <div class="chart chart-years" id="chart-years" role="img" aria-label="Bar chart of releases per year"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="download" class="dash-section">
+      <h2>Get the data</h2>
+      <p class="section-intro">The full data are deposited on Harvard Dataverse, so they can be downloaded and cited without this site. The dashboard shows only the quarterly and monthly party series.</p>
+      <div class="dl-grid">
+        <article class="dl-card">
+          <h3>Party time series</h3>
+          <p>Topic shares for every party by week, month, and quarter, with standard errors, release counts, and coverage flags. Start here for most analyses.</p>
+          <p class="dl-files"><code>party_time_{week,month,quarter}</code> · <code>coverage_party_month</code></p>
+          <a class="btn-small dataverse-link" href="#">Dataverse</a>
+        </article>
+        <article class="dl-card">
+          <h3>Releases</h3>
+          <p>One row per press release: party, date, ParlGov identifiers, and the release's share of sentences on each topic.</p>
+          <p class="dl-files"><code>documents</code></p>
+          <a class="btn-small dataverse-link" href="#">Dataverse</a>
+        </article>
+        <article class="dl-card">
+          <h3>Sentences</h3>
+          <p>Every coded sentence with its probability for each of the 22 categories (21 topics and non-policy). The largest file.</p>
+          <p class="dl-files"><code>sentences_classified</code></p>
+          <a class="btn-small dataverse-link" href="#">Dataverse</a>
+        </article>
+      </div>
+
+      <h3 class="h3">Before you analyse the data</h3>
+      <ul class="rules">
+        <li><strong>Compare topics with policy-conditioned shares</strong> (as in the chart above). How much non-policy content a release has is the least certain quantity in the data.</li>
+        <li><strong>Compare rather than read levels.</strong> Differences across parties, countries, and periods are more reliable than a topic's absolute share.</li>
+        <li><strong>Use large enough cells.</strong> Most party series are best analysed by quarter or year, or pooled across parties.</li>
+        <li><strong>Treat months without releases as missing</strong>, and use the coverage flags when comparing periods before and after December 2022.</li>
+      </ul>
+      <p class="fine">The paper sets out these rules in full, along with the validation results.</p>
+
+      <h3 class="h3">Cite</h3>
+      <p class="fine">Please cite the data paper (forthcoming) and <a href="https://parlgov.org/">ParlGov</a>, the source of party identifiers and families. The earlier PARTYPRESS Database (Erfort, Stoetzer &amp; Klüver 2023) is on the <a href="/">home page</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Data version <span id="data-version">–</span> · built <span id="data-built">–</span> · <a href="https://github.com/partypress-org" target="_blank" rel="noopener">GitHub</a></p>
+  </footer>
+  <script src="dashboard.js"></script>
+</body>
+</html>
