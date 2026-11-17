@@ -348,6 +348,40 @@ function addOption(s,v,t){const o=document.createElement('option');o.value=v;o.t
 function getParams(){const p={limit:parseInt(pageSizeSelect.value,10),offset:currentOffset,sort_by:sortBySelect.value,sort_dir:sortDirSelect.value};if(searchInput.value.trim()){p.q=searchInput.value.trim();p.include_total='false';}if(partySelect.value&&partySelect.value.includes('|')){const parts=partySelect.value.split('|');if(parts.length>=2){p.country=parts[0];p.party=parts.slice(1).join('|');}}else{if(countrySelect.value)p.country=countrySelect.value;if(partySelect.value)p.party=partySelect.value;}if(issueSelect.value)p.issue=issueSelect.value;if(dateFromInput.value)p.date_from=dateFromInput.value;if(dateToInput.value)p.date_to=dateToInput.value;return p;}
 function escapeHtml(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeHtmlAllowMark(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;let h=d.innerHTML;h=h.replace(/&lt;mark&gt;/gi,'<mark>').replace(/&lt;\/mark&gt;/gi,'</mark>');return h;}
+let sentenceReq=0;
+function renderSentenceCodes(sentences, query){
+  const q=query?escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'):'';
+  const re=q?new RegExp('('+q+')','gi'):null;
+  return sentences.map(function(s){
+    let text=escapeHtml(s.text||'');
+    if(re) text=text.replace(re,'<mark>$1</mark>');
+    const label=s.label?escapeHtml(s.label):'';
+    const badge=label?'<span class="sent-label"'+(s.score!=null?' title="'+Math.round(s.score*100)+'%"':'')+'>'+label+'</span> ':'';
+    return '<p class="sent">'+badge+text+'</p>';
+  }).join('');
+}
+function loadSentenceCodes(releaseId){
+  const req=++sentenceReq;
+  const status=document.createElement('p');
+  status.className='sent-status';
+  status.textContent='Loading sentence codes…';
+  textOverlayBody.prepend(status);
+  fetch(urlWithToken(SEARCH_API+'/release/'+encodeURIComponent(releaseId)+'/sentences')).then(function(r){
+    if(r.status===404) return null;
+    if(!r.ok) throw new Error('unavailable');
+    return r.json();
+  }).then(function(data){
+    if(req!==sentenceReq) return;
+    if(!data||!data.sentences||!data.sentences.length){status.remove();return;}
+    textOverlayBody.innerHTML=renderSentenceCodes(data.sentences, searchInput.value.trim());
+    if(data.truncated){
+      textOverlayBody.insertAdjacentHTML('beforeend','<p class="sent-status">Showing the first '+data.sentences.length+' sentences.</p>');
+    }
+  }).catch(function(){
+    if(req!==sentenceReq) return;
+    status.textContent='Sentence codes unavailable';
+  });
+}
 function rowHtml(r,i){
   const t=r.title||'(No title)';
   const tl=r.url
@@ -438,11 +472,12 @@ if(r.url){
   metaHtml+='<br>URL: <a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener">'+escapeHtml(r.url)+'</a>';
 }
 
-metaHtml+='<br>Date accessed: ';
+metaHtml+='<br>Date accessed: '+escapeHtml(String(r.date_collected||r.date_accessed||'').trim()||'NA');
 
 textOverlayMeta.innerHTML=metaHtml;
 textOverlayBody.innerHTML=escapeHtmlAllowMark(r.text||'(No content)');
 textOverlay.hidden=false;
+if(r.id!=null) loadSentenceCodes(r.id);
 };});}const merged={...data,total:data.total!=null?data.total:lastTotal,total_capped:data.total_capped||lastTotalCapped,total_cap:data.total_cap!=null?data.total_cap:lastTotalCap};applySummaryAndPagination(buildSummaryAndPagination(merged));if(hasSearch&&currentOffset===0){const countParams=new URLSearchParams(getParams());countParams.set('include_total','true');countParams.set('limit','1');countParams.set('offset','0');fetch(urlWithToken(SEARCH_API+'/list?'+countParams)).then(r=>r.json()).then(countData=>{if(!countData||countData.error)return;lastTotal=countData.total;lastTotalCapped=!!countData.total_capped;lastTotalCap=countData.total_cap!=null?countData.total_cap:null;applySummaryAndPagination(buildSummaryAndPagination({results:currentResults,offset:currentOffset,limit:data.limit,total:lastTotal,total_capped:lastTotalCapped,total_cap:lastTotalCap,next:countData.next}));});}}).catch(err=>{resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(err.message)+'</td></tr>';resultsSummary.textContent='';});}
 function triggerSearch(){currentOffset=0;fetchList();}
 countrySelect.onchange=()=>{populatePartyDropdown();if(window.updateMapSelection)window.updateMapSelection();};

@@ -83,6 +83,9 @@
     <h3><code>GET /filters</code></h3>
     <p>Returns distinct countries, parties, and issues for filter dropdowns.</p>
 
+    <h3><code>GET /release/{id}/sentences</code></h3>
+    <p>Topic code for each sentence of one press release. The first request classifies that release and caches the result; later requests are a lookup. The Texts page calls this when “Show text” is opened.</p>
+
     <h3><code>GET /download</code></h3>
     <p>CSV export. Max 1,000 rows. Use <code>cols</code> to select columns. For larger exports, use /list with pagination via <code>next</code>.</p>
 

@@ -589,3 +589,28 @@
   word-break: break-word;
 }
 
+.text-overlay-body .sent {
+  margin: 0 0 0.75rem;
+  white-space: normal;
+}
+
+.sent-label {
+  display: inline-block;
+  margin-right: 0.35rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(166, 124, 0, 0.14);
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.sent-status {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
