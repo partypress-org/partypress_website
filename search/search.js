@@ -7,7 +7,7 @@ const SEARCH_API = (typeof location !== 'undefined' && location.search.includes(
   : (document.body && document.body.dataset && document.body.dataset.apiUrl) || 'https://api.partypress.org';
 
 const DOWNLOAD_MAX = 1000;
-const ALL_COLUMNS = ['date', 'country', 'party', 'CAP_issue1', 'title', 'text', 'parlgov_party_id'];
+const ALL_COLUMNS = ['date', 'country', 'party', 'document_issue', 'title', 'text', 'parlgov_party_id'];
 
 // Elements
 const form = document.getElementById('search-form');
@@ -175,7 +175,7 @@ function rowHtml(r, index) {
     <td>${escapeHtml(r.country || '')}</td>
     <td>${escapeHtml(r.date || '')}</td>
     <td>${escapeHtml(r.party || '')}</td>
-    <td data-col="CAP_issue1">${escapeHtml(r.CAP_issue1 || '')}</td>
+    <td data-col="document_issue">${escapeHtml(r.document_issue || '')}</td>
     <td class="title-cell">${titleLink}${snippet}</td>
     <td><button type="button" class="expand-btn">Show text</button></td>
     <td class="opt-col" data-col="date_collected">${escapeHtml(r.date_collected || '')}</td>
@@ -262,7 +262,7 @@ showUrlCheck.addEventListener('change', toggleOptionalCols);
 
 downloadBtn.addEventListener('click', () => {
   downloadCols.innerHTML = ALL_COLUMNS.map(c => `
-    <label><input type="checkbox" name="col" value="${c}" ${['date','country','party','CAP_issue1','title','text'].includes(c) ? 'checked' : ''}> ${c}</label>
+    <label><input type="checkbox" name="col" value="${c}" ${['date','country','party','document_issue','title','text'].includes(c) ? 'checked' : ''}> ${c}</label>
   `).join('');
   downloadModal.hidden = false;
 });

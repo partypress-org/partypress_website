@@ -39,7 +39,7 @@
   <main class="search-main">
     <section class="search-hero">
       <h1>Browse & search press releases</h1>
-      <p class="search-sub">586,910 party press releases across 29 countries and 161 parties. Filter, search, and download.</p>
+      <p class="search-sub">617,179 party press releases across 29 countries and 160 parties. Filter, search, and download.</p>
 
       <div class="hero-map-and-issues">
         <div class="hero-map" id="hero-map">
@@ -86,7 +86,7 @@
               <option value="date" selected>Date</option>
               <option value="country">Country</option>
               <option value="party">Party</option>
-              <option value="CAP_issue1">Issue</option>
+              <option value="document_issue">Issue</option>
               <option value="title">Title</option>
             </select>
             <select id="sort-dir">
@@ -112,7 +112,7 @@
               <th>Country</th>
               <th>Date</th>
               <th>Party</th>
-              <th data-col="CAP_issue1">Issue</th>
+              <th data-col="document_issue">Issue</th>
               <th>Title</th>
               <th></th>
             </tr>
@@ -157,7 +157,7 @@
 (function(){
 const SEARCH_API = (typeof location !== 'undefined' && location.search.includes('local=1')) ? 'http://localhost:8073' : (document.body && document.body.dataset && document.body.dataset.apiUrl) || 'https://api.partypress.org';
 const DOWNLOAD_MAX = 1000;
-const ALL_COLUMNS = ['date', 'country', 'party', 'CAP_issue1', 'title', 'text', 'parlgov_party_id'];
+const ALL_COLUMNS = ['date', 'country', 'party', 'document_issue', 'title', 'text', 'parlgov_party_id'];
 const form = document.getElementById('search-form');
 const tokenInput = document.getElementById('api-token');
 const searchInput = document.getElementById('search-input');
@@ -251,7 +251,7 @@ const PARLGOV_COUNTRY_CODES = {
   'United Kingdom':'gbr',
   'UK':'gbr'
 };
-const ISSUE_SYMBOLS = { 'macroeconomics':'📈','civil rights':'⚖️','healthcare':'🏥','agriculture':'🌾','labor':'👷','education':'📚','environment and climate':'🌍','energy':'⚡','immigration':'🛂','transportation':'🚄','law and crime':'🔒','social welfare':'🤝','housing':'🏘️','domestic commerce':'💼','defense':'🛡️','technology':'💻','foreign trade':'📦','international affairs':'🌐','government operations':'🏛️','public lands':'🏞️','culture':'🎭' };
+const ISSUE_SYMBOLS = { 'macroeconomics':'📈','civil rights':'⚖️','health':'🏥','healthcare':'🏥','agriculture':'🌾','labor':'👷','education':'📚','environment':'🌍','environment and climate':'🌍','energy':'⚡','immigration':'🛂','transportation':'🚄','law and crime':'🔒','social welfare':'🤝','housing':'🏘️','domestic commerce':'💼','defense':'🛡️','technology':'💻','foreign trade':'📦','international affairs':'🌐','government operations':'🏛️','public lands':'🏞️','culture':'🎭' };
 let _europeSvgText = null, _apiCountries = null, _countryMapInited = false;
 function initIssueTiles(issues){
   const container=document.getElementById('issue-tiles');
@@ -438,7 +438,7 @@ function rowHtml(r,i){
     ? '<div class="search-snippet">'+escapeHtmlAllowMark(r.search_snippet)+'</div>'
     : '';
 
-  return '<tr data-row-index="'+i+'"><td>'+countryCell+'</td><td>'+escapeHtml(r.date||'')+'</td><td>'+partyCell+'</td><td>'+escapeHtml(r.CAP_issue1||'')+'</td><td class="title-cell">'+tl+sn+'</td><td><button type="button" class="expand-btn">Show text</button></td></tr>';
+  return '<tr data-row-index="'+i+'"><td>'+countryCell+'</td><td>'+escapeHtml(r.date||'')+'</td><td>'+partyCell+'</td><td>'+escapeHtml(r.document_issue||'')+'</td><td class="title-cell">'+tl+sn+'</td><td><button type="button" class="expand-btn">Show text</button></td></tr>';
 }
 function buildSummaryAndPagination(data){const total=data.total!=null?data.total:lastTotal;const limit=data.limit||parseInt(pageSizeSelect.value,10);const offset=data.offset!=null?data.offset:currentOffset;const hasTotal=total!=null;const pages=hasTotal?Math.ceil(total/limit):null;const cp=Math.floor(offset/limit)+1;const nextDisabled=hasTotal?offset+limit>=total:!data.next;let totalStr;if(total!=null){totalStr=total.toLocaleString()+' result'+(total!==1?'s':'')+(searchInput.value.trim()?' for "'+escapeHtml(searchInput.value.trim())+'"':'')+(data.total_capped?' (at least '+((data.total_cap!=null?data.total_cap:10000).toLocaleString())+' results; count capped for speed)':'');}else{totalStr=data.results.length+' result'+(data.results.length!==1?'s':'')+(searchInput.value.trim()?' for "'+escapeHtml(searchInput.value.trim())+'"':'')+' (counting…)';}const paginationHtml='<button type="button" id="page-prev" '+(offset===0?'disabled':'')+'>Previous</button><span class="page-info">Page '+cp+(pages!=null?' of '+pages:'')+' '+(hasTotal?'('+total.toLocaleString()+' total)':'')+'</span><button type="button" id="page-next" '+(nextDisabled?'disabled':'')+'>Next</button>';return{totalStr,paginationHtml,hasTotal,pages,cp,nextDisabled,offset,limit,total};}
 function applySummaryAndPagination(info){resultsSummary.textContent=info.totalStr;paginationEl.innerHTML=info.paginationHtml;paginationEl.querySelector('#page-prev')?.addEventListener('click',()=>{currentOffset=Math.max(0,info.offset-info.limit);fetchList();});paginationEl.querySelector('#page-next')?.addEventListener('click',()=>{currentOffset=info.offset+info.limit;fetchList();});}
@@ -485,15 +485,13 @@ if(r.wikipedia){
   metaHtml+='<br><a href="'+escapeHtml(r.wikipedia)+'" target="_blank" rel="noopener">Wikipedia</a>';
 }
 
-if(r.CAP_issue1){
-  metaHtml+='<br>Document CAP issue: '+escapeHtml(r.CAP_issue1);
+if(r.document_issue){
+  metaHtml+='<br>Document issue: '+escapeHtml(r.document_issue);
 }
 
 if(r.url){
   metaHtml+='<br>URL: <a href="'+escapeHtml(r.url)+'" target="_blank" rel="noopener">'+escapeHtml(r.url)+'</a>';
 }
-
-metaHtml+='<br>Date accessed: '+escapeHtml(String(r.date_collected||r.date_accessed||'').trim()||'NA');
 
 textOverlayMeta.innerHTML=metaHtml;
 textOverlayBody.innerHTML=escapeHtmlAllowMark(r.text||'(No content)');
@@ -507,7 +505,7 @@ issueSelect.onchange=()=>{updateIssueTilesSelection();};
 form.onsubmit=e=>{e.preventDefault();triggerSearch();};
 pageSizeSelect.onchange=()=>{currentOffset=0;fetchList();};
 sortBySelect.onchange=fetchList;sortDirSelect.onchange=fetchList;
-downloadBtn.onclick=()=>{downloadCols.innerHTML=ALL_COLUMNS.map(c=>'<label><input type="checkbox" name="col" value="'+c+'" '+(['date','country','party','CAP_issue1','title','text'].includes(c)?'checked':'')+'> '+c+'</label>').join('');downloadModal.hidden=false;};
+downloadBtn.onclick=()=>{downloadCols.innerHTML=ALL_COLUMNS.map(c=>'<label><input type="checkbox" name="col" value="'+c+'" '+(['date','country','party','document_issue','title','text'].includes(c)?'checked':'')+'> '+c+'</label>').join('');downloadModal.hidden=false;};
 downloadCancel.onclick=()=>{downloadModal.hidden=true;};
 downloadModal.onclick=e=>{if(e.target===downloadModal)downloadModal.hidden=true;};
 downloadConfirm.onclick=()=>{const cols=[...downloadModal.querySelectorAll('input[name="col"]:checked')].map(c=>c.value);if(cols.length===0)return;const t=getToken();if(!t){alert('Enter API token to download');return;}const p=getParams();const dl={};if(p.q)dl.q=p.q;if(p.country)dl.country=p.country;if(p.party)dl.party=p.party;if(p.issue)dl.issue=p.issue;if(p.date_from)dl.date_from=p.date_from;if(p.date_to)dl.date_to=p.date_to;dl.limit=DOWNLOAD_MAX;dl.cols=cols.join(',');dl.token=t;window.location.href=SEARCH_API+'/download?'+new URLSearchParams(dl);downloadModal.hidden=true;};

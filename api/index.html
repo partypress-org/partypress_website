@@ -50,7 +50,7 @@
 
   <main class="api-main">
     <h1>PARTYPRESS API</h1>
-    <p>REST API for browsing and searching the corpus of party press releases. Max 500 results per request. Use the <code>next</code> URL in the response to fetch the next page.</p>
+    <p>REST API for browsing and searching 617,179 party press releases (PARTYPRESS v2.0). Max 500 results per request. Use the <code>next</code> URL in the response to fetch the next page.</p>
 
     <p><a href="#" id="docs-link" class="docs-link" target="_blank" rel="noopener">Open interactive API docs →</a></p>
 
@@ -63,7 +63,7 @@
     <p>Browse press releases with filters and pagination.</p>
     <table class="param-table">
       <tr><th>Parameter</th><th>Description</th></tr>
-      <tr><td><code>fields</code></td><td>Comma-separated columns to return. Options: id, date, country, party, CAP_issue1, title, text, url, date_collected, parlgov_party_id</td></tr>
+      <tr><td><code>fields</code></td><td>Comma-separated columns to return. Options: id, date, country, party, document_issue, title, text, url, parlgov_party_id</td></tr>
       <tr><td><code>q</code></td><td>Full-text search (keywords)</td></tr>
       <tr><td><code>country</code></td><td>Filter by country</td></tr>
       <tr><td><code>party</code></td><td>Filter by party</td></tr>
@@ -72,7 +72,7 @@
       <tr><td><code>date_to</code></td><td>Date to (YYYY-MM-DD)</td></tr>
       <tr><td><code>limit</code></td><td>Results per page (1–500, default 25)</td></tr>
       <tr><td><code>offset</code></td><td>Skip N results (for pagination)</td></tr>
-      <tr><td><code>sort_by</code></td><td>date, country, party, CAP_issue1, title</td></tr>
+      <tr><td><code>sort_by</code></td><td>date, country, party, document_issue, title</td></tr>
       <tr><td><code>sort_dir</code></td><td>asc or desc</td></tr>
     </table>
     <p>Response includes <code>next</code>: URL for the next 500 (or your limit) results, or null if no more.</p>
