@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ — PARTYPRESS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon-180x180.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo">
+      <span class="logo-img-frame" aria-hidden="true">
+        <img src="../img/partypress.png" alt="" class="logo-img" decoding="async">
+      </span>
+      <span>partypress<span class="tld">.org</span></span>
+    </a>
+    <nav class="header-nav" aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/dashboard/">Dashboard</a>
+      <a href="/search/">Texts</a>
+      <a href="/download/">Download</a>
+      <a href="/faq/" aria-current="page">FAQ</a>
+      <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>FAQ</h1>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>I found a bug or bad data. Where do I report it?</summary>
+        <div class="faq-answer">
+          <p>Please open an issue at <a href="https://github.com/partypress-org/partypress_website/issues" target="_blank" rel="noopener">GitHub Issues (partypress_website)</a>. That includes problems with the search site, the data, or the <strong>API</strong>. When reporting a problem with a specific press release, please include if you can: the <strong>URL</strong> of the release, the <strong>ParlGov party ID</strong>, and the <strong>date</strong> of the release (as shown in the table). That helps us locate and fix the record quickly.</p>
+        </div>
+      </details>
+      <details class="faq-item" id="faq-donate">
+        <summary>I want to donate party press release data. How?</summary>
+        <div class="faq-answer">
+          <p>We welcome contributions. Please provide data as <strong>CSV</strong> with these columns (dates in <strong>YYYY-MM-DD</strong> format):</p>
+          <ul class="faq-cols">
+            <li><code>date</code> — release date</li>
+            <li><code>date_collected</code> — when you scraped/collected the row</li>
+            <li><code>country</code></li>
+            <li><code>party</code></li>
+            <li><code>title</code></li>
+            <li><code>text</code></li>
+            <li><code>url</code> (optional but recommended)</li>
+            <li><code>parlgov_party_id</code> (optional; <a href="https://parlgov.org/">ParlGov</a> party ID)</li>
+          </ul>
+          <p>Example:</p>
+          <pre class="faq-example">date,date_collected,country,party,title,text,url,parlgov_party_id
+2024-03-15,2024-03-20,Germany,SPD,Statement on climate law,"Full text of the press release…",https://example.org/press/123,523</pre>
+          <p>Your submission should be accompanied by a waiver stating that you do not require attribution. You can use this text:</p>
+          <blockquote class="faq-waiver">I release this data for use in PARTYPRESS without requiring attribution.</blockquote>
+          <p>We will still try to credit contributors where we can. You can submit donations with waiver via the <a href="https://github.com/partypress-org/partypress_website/issues" target="_blank" rel="noopener">Issues</a> page.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How often is the data updated?</summary>
+        <div class="faq-answer">
+          <p>Scraping is not done on a fixed schedule. We may update the corpus roughly yearly, but we do not promise any particular update frequency.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Are the data complete?</summary>
+        <div class="faq-answer">
+          <p>We take great care with data quality and consistency, but we cannot guarantee completeness or that every party press release is captured.</p>
+        </div>
+      </details>
+      <details class="faq-item" id="faq-guidance">
+        <summary>How should I analyse the data?</summary>
+        <div class="faq-answer">
+          <p>Five rules follow from the validation. The first three are about the measures; the last two are about research designs.</p>
+          <ol class="faq-rules">
+            <li><strong>Compare topics with policy-conditioned shares</strong>, as in the <a href="/dashboard/">dashboard</a> chart. How much of a release is non-policy — event logistics, greetings, generic praise — is the least certain quantity in the data. Policy-conditioned shares rescale the 21 policy topics so they sum to one, which is the right measure for comparing the composition of policy attention across parties or periods whose non-policy shares differ. Use unconditional shares when the question is attention relative to all communication, and check any result that depends on them under both definitions.</li>
+            <li><strong>Compare rather than read levels.</strong> Differences in a topic's share across parties, countries, and periods are more reliable than its absolute level. The classifier over-counts some codes and under-counts others — notably Government Operations, Law and Crime, and Foreign Trade — and the same classifier is applied everywhere, so contrasts are more trustworthy than a share read on its own. They are not immune: error depends on content, and can differ when the content differs.</li>
+            <li><strong>Check that results do not depend on how sentences are counted.</strong> Expected shares average the classifier's probabilities and carry its uncertainty into the aggregate; hard shares count each sentence's most likely code and do not. The probabilities are informative but over-confident. If a conclusion changes between the two, or with the threshold used to say that a release attends to an issue, report both. Pair a single threshold with a threshold curve or a threshold-free alternative.</li>
+            <li><strong>Use cells large enough to be reliable.</strong> For a typical topic, a party-month with 10 releases has a reliability of only 0.36 for comparisons across parties and periods, and 0.19 for tracking one party over time. Reliability reaches 0.7 at about 42 releases for the first purpose and about 99 for the second. With a median of 190 releases per party and year, most party series are best analysed by quarter or by year, or pooled across parties. Treat months without releases as missing rather than as zero attention — gaps usually reflect the archive, not silence — and use the coverage flags when comparing periods before and after December 2022, when a number of feeds end and the set of parties changes.</li>
+            <li><strong>Correct when precision matters.</strong> Classifier error depends on content and on the boundary with non-policy text, so it can bias a level or a small difference, not only add noise. When a conclusion rests on either, combine the predicted shares with a probability sample of reference codes, for instance by design-based supervised learning (Egami et al. 2023). The released validation sample includes its design weights. Corrected with its current language-model codes, estimates move towards that reference rather than towards human judgement; hand-coding the same sample would allow a correction towards human codes.</li>
+          </ol>
+          <p>The data paper sets these rules out in full, with the validation results they rest on.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Do you have data for [country/party] X?</summary>
+        <div class="faq-answer">
+          <p>We publish all the data we have. The map and filters on the <a href="/search/">Texts</a> page show which countries and parties are in the corpus. If a country or party is missing, we do not have it (yet)—you can offer to <a href="#faq-donate">donate data</a> via the Issues page.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How can I cite PARTYPRESS?</summary>
+        <div class="faq-answer">
+          <p>A <strong>PARTYPRESS v2</strong> citation will be made available here.</p>
+          <p>For <strong>PARTYPRESS v1</strong>, cite the database article: Erfort, C., Stoetzer, L. F., &amp; Klüver, H. (2023). The PARTYPRESS Database. <em>Research and Politics</em>. <a href="https://doi.org/10.1177/20531680231183512" target="_blank" rel="noopener">https://doi.org/10.1177/20531680231183512</a>. BibTeX is available on the <a href="/">partypress.org</a> homepage (PARTYPRESS v1 section).</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What is the license for the data?</summary>
+        <div class="faq-answer">
+          <p>Data are released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 International (CC BY 4.0)</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What is a ParlGov party ID?</summary>
+        <div class="faq-answer">
+          <p>The <strong>ParlGov party ID</strong> is a unique numeric identifier for political parties from the <a href="https://parlgov.org/" target="_blank" rel="noopener">ParlGov</a> database. We use ParlGov IDs so that parties can be matched consistently across countries and over time. You can look up parties and their IDs on <a href="https://parlgov.org/" target="_blank" rel="noopener">parlgov.org</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What are the CAP issue codes?</summary>
+        <div class="faq-answer">
+          <p>The issue labels (e.g. Environment, Health, Immigration) come from the <a href="https://www.comparativeagendas.net/" target="_blank" rel="noopener">Comparative Agendas Project (CAP)</a>. We adapted the CAP topic codebook and trained a multilingual transformer model to assign CAP issue codes to party press releases; see the model card at <a href="https://huggingface.co/z-dickson/xlm-roberta-large-political-issues" target="_blank" rel="noopener">Hugging Face</a>, and the PARTYPRESS v1 <a href="https://doi.org/10.1177/20531680231183512" target="_blank" rel="noopener">article</a> for methodological details.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How is PARTYPRESS funded?</summary>
+        <div class="faq-answer">
+          <p>PARTYPRESS is generously supported by <strong>LSE Seed Research Funding</strong>, by the <strong>Deutsche Forschungsgemeinschaft (DFG)</strong> (<a href="https://gepris.dfg.de/gepris/projekt/529544178?language=en" target="_blank" rel="noopener">project 529544178</a>), and by the universities with which the authors are affiliated (London School of Economics, Witten/Herdecke University).</p>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p><a href="/">partypress.org</a> · <a href="https://github.com/partypress-org" target="_blank" rel="noopener">GitHub</a></p>
+  </footer>
+  <script>
+    (function () {
+      function openFromHash() {
+        if (location.hash !== '#faq-guidance') return;
+        var item = document.getElementById('faq-guidance');
+        if (item) item.open = true;
+      }
+      openFromHash();
+      window.addEventListener('hashchange', openFromHash);
+    })();
+  </script>
+</body>
+</html>

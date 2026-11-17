@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PARTYPRESS v2 – coming soon</title>
+  <title>PARTYPRESS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
@@ -21,40 +21,78 @@
       </span>
       <span>partypress<span class="tld">.org</span></span>
     </a>
-    <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener" aria-label="GitHub">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-    </a>
+    <nav class="header-nav" aria-label="Main">
+      <a href="/" aria-current="page">Home</a>
+      <a href="/dashboard/">Dashboard</a>
+      <a href="/search/">Texts</a>
+      <a href="/download/">Download</a>
+      <a href="/faq/">FAQ</a>
+      <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+    </nav>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-title-row">
-        <p class="hero-brand">
-          <span class="hero-logo-frame">
-            <img src="img/partypress.png" alt="PARTYPRESS" class="hero-logo" decoding="async">
-          </span>
-        </p>
-        <h1>PARTYPRESS v2</h1>
-      </div>
-      <p class="tagline">Coming soon.</p>
-      <p class="sub"><a href="dashboard/" style="color: var(--accent); font-weight: 600;">Explore the dashboard and download the data &rarr;</a></p>
-      <p class="sub">A large-scale, cross-national corpus of party press releases—with LLM-assisted tools to explore who responds to whom, and a public web app for researchers, journalists, and citizens.</p>
+    <section class="intro">
+      <p>PARTYPRESS is an open corpus of party press releases from across Europe. It records what parties say between elections, day by day, rather than only in manifestos.</p>
+      <p>Releases are linked to a party and a date, and coded with <a href="https://www.comparativeagendas.net/" target="_blank" rel="noopener">Comparative Agendas Project</a> topic codes, so issue attention can be compared across parties, countries, and time.</p>
+      <p>The current release is PARTYPRESS v2: a wider set of countries, a public dashboard of issue attention, and a searchable archive of the texts. It extends the PARTYPRESS Database published in 2023.</p>
+      <p>We use <a href="https://parlgov.org/">ParlGov</a> for party identifiers (party IDs) and party-level information such as party names. When citing PARTYPRESS, please also cite ParlGov as the source of these codes and metadata.</p>
     </section>
 
-    <section class="coming">
-      <h2>What’s coming</h2>
-      <ul>
-        <li><strong>~30 countries, 2010–2025</strong> — Standardized, multilingual corpus of party press releases from major parties across the EU, UK, Norway, and Switzerland.</li>
-        <li><strong>Inter-party responsiveness</strong> — Validated LLM-assisted methods to detect who responds to whom, on what issue, and with what stance.</li>
-        <li><strong>Open by design</strong> — Data, code, and documentation under open licenses; replication and extension in mind.</li>
-        <li><strong>Web application</strong> — Explore the dataset, visualize party communication patterns, and run custom analyses without coding.</li>
-      </ul>
+    <section class="foundation">
+      <h2>PARTYPRESS v2</h2>
+      <div class="paper-card">
+        <ul class="facts">
+          <li><strong>Countries.</strong> 29: Austria, Belgium, Bulgaria, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy, Lithuania, Luxembourg, the Netherlands, Norway, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden, Switzerland, and the United Kingdom.</li>
+          <li><strong>Time.</strong> 2010–2026. Coverage starts later in some countries, and several archives end in 2022.</li>
+          <li><strong>Parties.</strong> 161, identified with <a href="https://parlgov.org/">ParlGov</a> party IDs.</li>
+          <li><strong>Topic codes.</strong> Every sentence is coded into one of 21 <a href="https://www.comparativeagendas.net/" target="_blank" rel="noopener">Comparative Agendas Project</a> policy topics (plus non-policy). The corpus holds 586,910 press releases.</li>
+        </ul>
+        <div class="paper-card-head">
+          <p class="foundation-v1-brand">
+            <span class="foundation-v1-logo-frame">
+              <img src="img/partypress.png" alt="PARTYPRESS v2" class="foundation-v1-logo" decoding="async">
+            </span>
+          </p>
+          <div class="paper-card-meta">
+            <h3 class="paper-title">PARTYPRESS: A Sentence-Level Database of Party Issue Attention using Press Releases from 29 European Democracies from 2010 to 2026</h3>
+            <p class="paper-authors"><a href="https://z-dickson.github.io/">Zachary P. Dickson</a> and <a href="https://corneliuserfort.de/">Cornelius Erfort</a></p>
+            <p class="paper-venue">Working Paper, 2026</p>
+          </div>
+        </div>
+        <p class="paper-desc">Sentence-level coding of party press releases from 29 European democracies—the current release for comparing issue attention across parties, countries, and time.</p>
+        <div class="paper-links">
+          <a class="paper-link-btn" href="/dashboard/">Dashboard</a>
+          <a class="paper-link-btn" href="/search/">Texts</a>
+          <a class="paper-link-btn" href="/download/">Download</a>
+          <a class="paper-link-btn" href="https://github.com/partypress-org" target="_blank" rel="noopener">GitHub</a>
+          <div class="bibtex-wrap">
+            <button type="button" class="bibtex-toggle" aria-expanded="false" data-bibtex="dickson_erfort_2026">BibTeX</button>
+            <div id="bibtex-dickson_erfort_2026" class="bibtex-block" hidden>
+              <pre class="bibtex-code">@unpublished{dickson_erfort_2026,
+  author = {Dickson, Zachary P. and Erfort, Cornelius},
+  title = {{PARTYPRESS}: A Sentence-Level Database of Party Issue Attention using Press Releases from 29 {European} Democracies from 2010 to 2026},
+  year = {2026},
+  note = {Working paper}
+}</pre>
+              <button type="button" class="bibtex-copy">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="foundation">
       <h2>PARTYPRESS v1</h2>
-      <p class="foundation-intro">PARTYPRESS v2 builds on the <strong>PARTYPRESS Database</strong> and related work:</p>
       <div class="paper-card">
+        <ul class="facts">
+          <li><strong>Countries.</strong> 9: Austria, Denmark, Germany, Ireland, the Netherlands, Poland, Spain, Sweden, and the United Kingdom.</li>
+          <li><strong>Time.</strong> 2010–2020.</li>
+          <li><strong>Parties.</strong> 68. The published release contains 269,418 press releases.</li>
+          <li><strong>Topic codes.</strong> Each press release is classified into one of 21 <a href="https://www.comparativeagendas.net/" target="_blank" rel="noopener">Comparative Agendas Project</a> issue categories.</li>
+        </ul>
         <div class="paper-card-head">
           <p class="foundation-v1-brand">
             <span class="foundation-v1-logo-frame">
@@ -91,11 +129,6 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <section class="foundation data-sources">
-      <h2>Party data & identifiers</h2>
-      <p class="foundation-intro">We use <a href="https://parlgov.org/">ParlGov</a> for party identifiers (party IDs) and party-level information such as party names. When citing PARTYPRESS, please also cite ParlGov as the source of these codes and metadata.</p>
     </section>
 
     <section class="team">

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download — PARTYPRESS</title>
+  <meta name="description" content="Download the PARTYPRESS v2 data from Harvard Dataverse.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon-180x180.png">
+  <link rel="manifest" href="../assets/site.webmanifest">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<!--
+  DATAVERSE: set data-dataverse to the dataset DOI link once it is minted.
+  While it contains "XXXXXX" the page shows a "DOI pending" note next to each link.
+-->
+<body data-dataverse="https://doi.org/10.7910/DVN/XXXXXX">
+  <header class="site-header">
+    <a href="/" class="logo">
+      <span class="logo-img-frame" aria-hidden="true">
+        <img src="../img/partypress.png" alt="" class="logo-img" decoding="async">
+      </span>
+      <span>partypress<span class="tld">.org</span></span>
+    </a>
+    <nav class="header-nav" aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/dashboard/">Dashboard</a>
+      <a href="/search/">Texts</a>
+      <a href="/download/" aria-current="page">Download</a>
+      <a href="/faq/">FAQ</a>
+      <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Get the data</h1>
+    <p class="section-intro">The full PARTYPRESS v2 data are deposited on Harvard Dataverse, so they can be downloaded and cited without this site. The <a href="/dashboard/">dashboard</a> shows only the quarterly and monthly party series.</p>
+    <p class="dv-pending" hidden>The Dataverse DOI will be added when the dataset is published.</p>
+    <div class="dl-grid">
+      <article class="dl-card">
+        <h3>Party time series</h3>
+        <p>Topic shares for every party by week, month, and quarter, with standard errors, release counts, and coverage flags. Start here for most analyses.</p>
+        <p class="dl-files"><code>party_time_{week,month,quarter}</code> · <code>coverage_party_month</code></p>
+        <a class="btn-small dataverse-link" href="#">Dataverse</a>
+      </article>
+      <article class="dl-card">
+        <h3>Releases</h3>
+        <p>One row per press release: party, date, ParlGov identifiers, and the release's share of sentences on each topic.</p>
+        <p class="dl-files"><code>documents</code></p>
+        <a class="btn-small dataverse-link" href="#">Dataverse</a>
+      </article>
+      <article class="dl-card">
+        <h3>Sentences</h3>
+        <p>Every coded sentence with its probability for each of the 22 categories (21 topics and non-policy). The largest file.</p>
+        <p class="dl-files"><code>sentences_classified</code></p>
+        <a class="btn-small dataverse-link" href="#">Dataverse</a>
+      </article>
+    </div>
+
+    <h2 class="h3">Before you analyse the data</h2>
+    <ul class="rules">
+      <li><strong>Compare topics with policy-conditioned shares</strong> (as in the <a href="/dashboard/">dashboard</a> chart). How much non-policy content a release has is the least certain quantity in the data.</li>
+      <li><strong>Compare rather than read levels.</strong> Differences across parties, countries, and periods are more reliable than a topic's absolute share.</li>
+      <li><strong>Check that results do not depend on how sentences are counted.</strong> If a conclusion changes between expected and hard shares, or with the threshold for attending to an issue, report both.</li>
+      <li><strong>Use cells large enough to be reliable.</strong> Most party series are best analysed by quarter or year, or pooled across parties. Treat months without releases as missing, and use the coverage flags when comparing periods before and after December 2022.</li>
+      <li><strong>Correct when precision matters.</strong> When a claim rests on a level or a small difference, combine the predicted shares with a sample of reference codes.</li>
+    </ul>
+    <p class="fine">Each rule is explained in the <a href="/faq/#faq-guidance">FAQ</a>. The paper sets them out with the validation results.</p>
+
+    <h2 class="h3">Cite</h2>
+    <p class="fine">Please cite the data paper (forthcoming) and <a href="https://parlgov.org/">ParlGov</a>, the source of party identifiers and families. PARTYPRESS v1 (Erfort, Stoetzer &amp; Klüver 2023; 9 countries, 68 parties, 2010–2020) is on <a href="https://doi.org/10.7910/DVN/OINX7Q">Dataverse</a>. Citation details are on the <a href="/">home page</a>.</p>
+  </main>
+
+  <footer class="site-footer">
+    <p><a href="/">partypress.org</a> · <a href="https://github.com/partypress-org" target="_blank" rel="noopener">GitHub</a></p>
+  </footer>
+  <script>
+    (function () {
+      var url = document.body.getAttribute('data-dataverse') || '';
+      var pending = !url || url.indexOf('XXXXXX') >= 0;
+      document.querySelectorAll('.dataverse-link').forEach(function (a) {
+        if (pending) {
+          a.removeAttribute('href');
+          a.setAttribute('aria-disabled', 'true');
+          a.textContent = 'Dataverse (DOI pending)';
+        } else {
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+        }
+      });
+      document.querySelectorAll('.dv-pending').forEach(function (p) { p.hidden = !pending; });
+    })();
+  </script>
+</body>
+</html>

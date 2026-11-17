@@ -676,10 +676,6 @@
     var url = document.body.getAttribute('data-dataverse') || '';
     var pending = !url || url.indexOf('XXXXXX') >= 0;
     document.querySelectorAll('.dataverse-link').forEach(function (a) {
-      if (a.classList.contains('btn-primary')) {
-        a.href = pending ? '#download' : url;
-        return;
-      }
       if (pending) {
         a.removeAttribute('href');
         a.setAttribute('aria-disabled', 'true');

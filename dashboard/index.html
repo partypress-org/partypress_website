@@ -15,11 +15,7 @@
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="dashboard.css">
 </head>
-<!--
-  DATAVERSE: set data-dataverse to the dataset DOI link once it is minted.
-  While it contains "XXXXXX" the page shows a "DOI pending" note next to each link.
--->
-<body data-dataverse="https://doi.org/10.7910/DVN/XXXXXX">
+<body>
   <header class="site-header">
     <a href="/" class="logo">
       <span class="logo-img-frame" aria-hidden="true">
@@ -30,7 +26,9 @@
     <nav class="header-nav" aria-label="Main">
       <a href="/">Home</a>
       <a href="/dashboard/" aria-current="page">Dashboard</a>
-      <a href="#download">Download</a>
+      <a href="/search/">Texts</a>
+      <a href="/download/">Download</a>
+      <a href="/faq/">FAQ</a>
       <a href="https://github.com/partypress-org" class="header-github" target="_blank" rel="noopener" aria-label="GitHub">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
       </a>
@@ -40,12 +38,7 @@
   <main class="dash-main">
     <section class="dash-hero">
       <h1>PARTYPRESS dashboard</h1>
-      <p class="dash-lead">What European parties talk about between elections. Every sentence of every press release is coded into one of 21 Comparative Agendas Project topics. Explore party issue attention below, then download the full data from Dataverse.</p>
-      <div class="dash-cta">
-        <a class="btn-primary dataverse-link" href="#download">Download the data on Dataverse</a>
-        <a class="btn-secondary" href="#explore">Explore issue attention</a>
-      </div>
-      <p class="dv-pending" hidden>The Dataverse DOI will be added when the dataset is published.</p>
+      <p class="dash-lead">What European parties talk about between elections. Every sentence of every press release is coded into one of 21 <a href="https://www.comparativeagendas.net/" target="_blank" rel="noopener">Comparative Agendas Project</a> topics. Explore party issue attention below, or download the full data.</p>
     </section>
 
     <section class="stat-row" aria-label="Corpus at a glance">
@@ -131,42 +124,6 @@
       </div>
     </section>
 
-    <section id="download" class="dash-section">
-      <h2>Get the data</h2>
-      <p class="section-intro">The full data are deposited on Harvard Dataverse, so they can be downloaded and cited without this site. The dashboard shows only the quarterly and monthly party series.</p>
-      <div class="dl-grid">
-        <article class="dl-card">
-          <h3>Party time series</h3>
-          <p>Topic shares for every party by week, month, and quarter, with standard errors, release counts, and coverage flags. Start here for most analyses.</p>
-          <p class="dl-files"><code>party_time_{week,month,quarter}</code> · <code>coverage_party_month</code></p>
-          <a class="btn-small dataverse-link" href="#">Dataverse</a>
-        </article>
-        <article class="dl-card">
-          <h3>Releases</h3>
-          <p>One row per press release: party, date, ParlGov identifiers, and the release's share of sentences on each topic.</p>
-          <p class="dl-files"><code>documents</code></p>
-          <a class="btn-small dataverse-link" href="#">Dataverse</a>
-        </article>
-        <article class="dl-card">
-          <h3>Sentences</h3>
-          <p>Every coded sentence with its probability for each of the 22 categories (21 topics and non-policy). The largest file.</p>
-          <p class="dl-files"><code>sentences_classified</code></p>
-          <a class="btn-small dataverse-link" href="#">Dataverse</a>
-        </article>
-      </div>
-
-      <h3 class="h3">Before you analyse the data</h3>
-      <ul class="rules">
-        <li><strong>Compare topics with policy-conditioned shares</strong> (as in the chart above). How much non-policy content a release has is the least certain quantity in the data.</li>
-        <li><strong>Compare rather than read levels.</strong> Differences across parties, countries, and periods are more reliable than a topic's absolute share.</li>
-        <li><strong>Use large enough cells.</strong> Most party series are best analysed by quarter or year, or pooled across parties.</li>
-        <li><strong>Treat months without releases as missing</strong>, and use the coverage flags when comparing periods before and after December 2022.</li>
-      </ul>
-      <p class="fine">The paper sets out these rules in full, along with the validation results.</p>
-
-      <h3 class="h3">Cite</h3>
-      <p class="fine">Please cite the data paper (forthcoming) and <a href="https://parlgov.org/">ParlGov</a>, the source of party identifiers and families. The earlier PARTYPRESS Database (Erfort, Stoetzer &amp; Klüver 2023) is on the <a href="/">home page</a>.</p>
-    </section>
   </main>
 
   <footer class="site-footer">

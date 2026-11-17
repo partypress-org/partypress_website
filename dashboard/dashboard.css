@@ -21,25 +21,6 @@
   padding: 2.5rem 2rem 3rem;
 }
 
-/* Header nav */
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  font-size: 0.9rem;
-}
-.header-nav a:not(.header-github) {
-  color: var(--muted);
-  text-decoration: none;
-}
-.header-nav a:not(.header-github):hover,
-.header-nav a[aria-current="page"] {
-  color: var(--text);
-}
-.header-nav a[aria-current="page"] {
-  font-weight: 600;
-}
-
 /* Hero */
 .dash-hero h1 {
   font-family: var(--font-display);
@@ -52,39 +33,7 @@
 .dash-lead {
   max-width: 44rem;
   color: var(--muted);
-  margin: 0 0 1.25rem;
-}
-.dash-cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-.btn-primary,
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.5rem;
-  padding: 0.45rem 1rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border: 1px solid var(--accent);
-}
-.btn-primary:hover {
-  background: #8f6b00;
-}
-.btn-secondary {
-  border: 1px solid var(--muted);
-  color: var(--text);
-}
-.btn-secondary:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  margin: 0;
 }
 .dv-pending {
   margin: 0.6rem 0 0;
@@ -480,15 +429,6 @@
 @media (max-width: 600px) {
   .dash-main {
     padding: 1.75rem 1rem 2.5rem;
-  }
-  .site-header {
-    padding: 1rem;
-  }
-  .header-nav {
-    gap: 0.8rem;
-  }
-  .header-nav a[href="#download"] {
-    display: none;
   }
   .cov-head,
   .cov-row {
