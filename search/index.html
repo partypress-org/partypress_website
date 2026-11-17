@@ -144,6 +144,7 @@
       <button type="button" id="text-overlay-close" aria-label="Close">&times;</button>
       <h4 id="text-overlay-title"></h4>
       <p id="text-overlay-meta"></p>
+      <p id="text-overlay-codes" class="sent-codes" hidden></p>
       <div id="text-overlay-body" class="text-overlay-body"></div>
     </div>
   </div>
@@ -183,6 +184,7 @@ const textOverlayClose = document.getElementById('text-overlay-close');
 const textOverlayTitle = document.getElementById('text-overlay-title');
 const textOverlayMeta = document.getElementById('text-overlay-meta');
 const textOverlayBody = document.getElementById('text-overlay-body');
+const textOverlayCodes = document.getElementById('text-overlay-codes');
 let currentOffset = 0, currentTotal = 0, currentResults = [];
 let lastTotal = null, lastTotalCapped = false, lastTotalCap = null;
 let allPartyOptions = [], fallbackParties = [];
@@ -349,6 +351,27 @@ function getParams(){const p={limit:parseInt(pageSizeSelect.value,10),offset:cur
 function escapeHtml(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeHtmlAllowMark(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;let h=d.innerHTML;h=h.replace(/&lt;mark&gt;/gi,'<mark>').replace(/&lt;\/mark&gt;/gi,'</mark>');return h;}
 let sentenceReq=0;
+function setCodesStatus(text, loading){
+  if(!textOverlayCodes) return;
+  textOverlayCodes.classList.toggle('is-loading', !!loading);
+  if(!text){
+    textOverlayCodes.hidden=true;
+    textOverlayCodes.textContent='';
+    return;
+  }
+  textOverlayCodes.hidden=false;
+  textOverlayCodes.textContent=text;
+}
+function sentenceBreakdown(sentences){
+  const counts={};
+  sentences.forEach(function(s){
+    if(!s.label) return;
+    counts[s.label]=(counts[s.label]||0)+1;
+  });
+  return Object.keys(counts).sort(function(a,b){
+    return counts[b]-counts[a] || a.localeCompare(b);
+  }).map(function(label){return label+' '+counts[label];}).join(' · ');
+}
 function renderSentenceCodes(sentences, query){
   const q=query?escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'):'';
   const re=q?new RegExp('('+q+')','gi'):null;
@@ -356,30 +379,28 @@ function renderSentenceCodes(sentences, query){
     let text=escapeHtml(s.text||'');
     if(re) text=text.replace(re,'<mark>$1</mark>');
     const label=s.label?escapeHtml(s.label):'';
-    const badge=label?'<span class="sent-label"'+(s.score!=null?' title="'+Math.round(s.score*100)+'%"':'')+'>'+label+'</span> ':'';
+    const badge=label?'<span class="sent-label">'+label+'</span>':'';
     return '<p class="sent">'+badge+text+'</p>';
   }).join('');
 }
 function loadSentenceCodes(releaseId){
   const req=++sentenceReq;
-  const status=document.createElement('p');
-  status.className='sent-status';
-  status.textContent='Loading sentence codes…';
-  textOverlayBody.prepend(status);
+  setCodesStatus('Loading sentence codes…', true);
   fetch(urlWithToken(SEARCH_API+'/release/'+encodeURIComponent(releaseId)+'/sentences')).then(function(r){
     if(r.status===404) return null;
     if(!r.ok) throw new Error('unavailable');
     return r.json();
   }).then(function(data){
     if(req!==sentenceReq) return;
-    if(!data||!data.sentences||!data.sentences.length){status.remove();return;}
+    if(!data||!data.sentences||!data.sentences.length){setCodesStatus('');return;}
+    const breakdown=sentenceBreakdown(data.sentences);
+    let note=breakdown;
+    if(data.truncated) note=(note?note+' · ':'')+'first '+data.sentences.length+' sentences';
+    setCodesStatus(note, false);
     textOverlayBody.innerHTML=renderSentenceCodes(data.sentences, searchInput.value.trim());
-    if(data.truncated){
-      textOverlayBody.insertAdjacentHTML('beforeend','<p class="sent-status">Showing the first '+data.sentences.length+' sentences.</p>');
-    }
   }).catch(function(){
     if(req!==sentenceReq) return;
-    status.textContent='Sentence codes unavailable';
+    setCodesStatus('Sentence codes unavailable', false);
   });
 }
 function rowHtml(r,i){
@@ -465,7 +486,7 @@ if(r.wikipedia){
 }
 
 if(r.CAP_issue1){
-  metaHtml+='<br>CAP issue: '+escapeHtml(r.CAP_issue1);
+  metaHtml+='<br>Document CAP issue: '+escapeHtml(r.CAP_issue1);
 }
 
 if(r.url){
@@ -476,6 +497,7 @@ metaHtml+='<br>Date accessed: '+escapeHtml(String(r.date_collected||r.date_acces
 
 textOverlayMeta.innerHTML=metaHtml;
 textOverlayBody.innerHTML=escapeHtmlAllowMark(r.text||'(No content)');
+setCodesStatus('');
 textOverlay.hidden=false;
 if(r.id!=null) loadSentenceCodes(r.id);
 };});}const merged={...data,total:data.total!=null?data.total:lastTotal,total_capped:data.total_capped||lastTotalCapped,total_cap:data.total_cap!=null?data.total_cap:lastTotalCap};applySummaryAndPagination(buildSummaryAndPagination(merged));if(hasSearch&&currentOffset===0){const countParams=new URLSearchParams(getParams());countParams.set('include_total','true');countParams.set('limit','1');countParams.set('offset','0');fetch(urlWithToken(SEARCH_API+'/list?'+countParams)).then(r=>r.json()).then(countData=>{if(!countData||countData.error)return;lastTotal=countData.total;lastTotalCapped=!!countData.total_capped;lastTotalCap=countData.total_cap!=null?countData.total_cap:null;applySummaryAndPagination(buildSummaryAndPagination({results:currentResults,offset:currentOffset,limit:data.limit,total:lastTotal,total_capped:lastTotalCapped,total_cap:lastTotalCap,next:countData.next}));});}}).catch(err=>{resultsBody.innerHTML='<tr><td colspan="8" class="api-status error">'+escapeHtml(err.message)+'</td></tr>';resultsSummary.textContent='';});}
@@ -489,7 +511,7 @@ downloadBtn.onclick=()=>{downloadCols.innerHTML=ALL_COLUMNS.map(c=>'<label><inpu
 downloadCancel.onclick=()=>{downloadModal.hidden=true;};
 downloadModal.onclick=e=>{if(e.target===downloadModal)downloadModal.hidden=true;};
 downloadConfirm.onclick=()=>{const cols=[...downloadModal.querySelectorAll('input[name="col"]:checked')].map(c=>c.value);if(cols.length===0)return;const t=getToken();if(!t){alert('Enter API token to download');return;}const p=getParams();const dl={};if(p.q)dl.q=p.q;if(p.country)dl.country=p.country;if(p.party)dl.party=p.party;if(p.issue)dl.issue=p.issue;if(p.date_from)dl.date_from=p.date_from;if(p.date_to)dl.date_to=p.date_to;dl.limit=DOWNLOAD_MAX;dl.cols=cols.join(',');dl.token=t;window.location.href=SEARCH_API+'/download?'+new URLSearchParams(dl);downloadModal.hidden=true;};
-textOverlayClose.onclick=()=>{textOverlay.hidden=true;};
+textOverlayClose.onclick=()=>{textOverlay.hidden=true;sentenceReq++;setCodesStatus('');};
 textOverlay.onclick=e=>{if(e.target===textOverlay)textOverlay.hidden=true;};
 if(apiDocsLink)apiDocsLink.href=SEARCH_API+'/docs';
 if(getToken())fetchList();else resultsBody.innerHTML='<tr><td colspan="8" class="api-status">Enter API token above to search</td></tr>';

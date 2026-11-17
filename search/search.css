@@ -589,28 +589,45 @@
   word-break: break-word;
 }
 
+.sent-codes {
+  margin: -0.35rem 0 0.85rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.sent-codes.is-loading {
+  font-style: italic;
+  color: var(--accent);
+}
+
 .text-overlay-body .sent {
+  position: relative;
   margin: 0 0 0.75rem;
   white-space: normal;
 }
 
 .sent-label {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% - 0.15rem);
+  z-index: 2;
   display: inline-block;
-  margin-right: 0.35rem;
-  padding: 0.05rem 0.4rem;
+  padding: 0.1rem 0.4rem;
   border-radius: 4px;
-  background: rgba(166, 124, 0, 0.14);
-  color: var(--text);
+  background: var(--text);
+  color: var(--bg);
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1.4;
-  vertical-align: baseline;
   white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
 }
 
-.sent-status {
-  margin: 0 0 0.75rem;
-  color: var(--muted);
-  font-size: 0.85rem;
+.sent:hover .sent-label,
+.sent:focus-within .sent-label {
+  opacity: 1;
 }
 
