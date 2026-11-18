@@ -111,24 +111,6 @@ body {
   text-decoration: none;
   color: var(--text);
 }
-/* Header: logo ~20% smaller than prior max (116px → ~93px); width fits image */
-.logo-img-frame {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  height: clamp(calc(58px * 0.8), calc(20vw * 0.8), calc(116px * 0.8));
-  width: fit-content;
-  overflow: hidden;
-}
-
-.logo-img-frame .logo-img {
-  display: block;
-  height: clamp(calc(58px * 0.8), calc(20vw * 0.8), calc(116px * 0.8));
-  width: auto;
-  margin: 0;
-  object-fit: contain;
-  object-position: left center;
-}
 .logo .tld {
   color: var(--muted);
   font-weight: 400;
