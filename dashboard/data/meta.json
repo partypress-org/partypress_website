@@ -1,12 +1,12 @@
 {
- "generated": "2026-11-17",
- "corpus_version": "v2.0",
+ "generated": "2026-11-23",
+ "corpus_version": "v1.1",
  "totals": {
-  "documents": 617179,
-  "sentences": 8134042,
+  "documents": 650367,
+  "sentences": 8538693,
   "countries": 29,
   "parties": 160,
-  "first_date": "2010-01-01",
+  "first_date": "2004-09-08",
   "last_date": "2026-11-17"
  },
  "topics": [
@@ -98,9 +98,9 @@
  "countries": [
   {
    "country": "Austria",
-   "n_docs": 106135,
+   "n_docs": 143946,
    "n_parties": 5,
-   "first_year": 2010,
+   "first_year": 2004,
    "last_year": 2026,
    "file": "austria"
   },
@@ -122,7 +122,7 @@
   },
   {
    "country": "Croatia",
-   "n_docs": 11571,
+   "n_docs": 11570,
    "n_parties": 4,
    "first_year": 2010,
    "last_year": 2025,
@@ -138,7 +138,7 @@
   },
   {
    "country": "Czech Republic",
-   "n_docs": 7611,
+   "n_docs": 7613,
    "n_parties": 5,
    "first_year": 2015,
    "last_year": 2025,
@@ -154,7 +154,7 @@
   },
   {
    "country": "Estonia",
-   "n_docs": 7605,
+   "n_docs": 7604,
    "n_parties": 5,
    "first_year": 2013,
    "last_year": 2025,
@@ -170,7 +170,7 @@
   },
   {
    "country": "France",
-   "n_docs": 9877,
+   "n_docs": 9876,
    "n_parties": 7,
    "first_year": 2010,
    "last_year": 2026,
@@ -178,9 +178,9 @@
   },
   {
    "country": "Germany",
-   "n_docs": 68570,
+   "n_docs": 68891,
    "n_parties": 6,
-   "first_year": 2010,
+   "first_year": 2005,
    "last_year": 2026,
    "file": "germany"
   },
@@ -194,7 +194,7 @@
   },
   {
    "country": "Hungary",
-   "n_docs": 12148,
+   "n_docs": 12145,
    "n_parties": 3,
    "first_year": 2015,
    "last_year": 2025,
@@ -202,7 +202,7 @@
   },
   {
    "country": "Iceland",
-   "n_docs": 6019,
+   "n_docs": 6020,
    "n_parties": 4,
    "first_year": 2014,
    "last_year": 2026,
@@ -210,7 +210,7 @@
   },
   {
    "country": "Ireland",
-   "n_docs": 76535,
+   "n_docs": 76107,
    "n_parties": 8,
    "first_year": 2010,
    "last_year": 2026,
@@ -226,7 +226,7 @@
   },
   {
    "country": "Lithuania",
-   "n_docs": 7823,
+   "n_docs": 7824,
    "n_parties": 4,
    "first_year": 2010,
    "last_year": 2026,
@@ -234,7 +234,7 @@
   },
   {
    "country": "Luxembourg",
-   "n_docs": 9539,
+   "n_docs": 9561,
    "n_parties": 5,
    "first_year": 2011,
    "last_year": 2026,
@@ -242,7 +242,7 @@
   },
   {
    "country": "Netherlands",
-   "n_docs": 30136,
+   "n_docs": 30139,
    "n_parties": 11,
    "first_year": 2010,
    "last_year": 2026,
@@ -258,7 +258,7 @@
   },
   {
    "country": "Poland",
-   "n_docs": 30034,
+   "n_docs": 29925,
    "n_parties": 10,
    "first_year": 2010,
    "last_year": 2026,
@@ -266,7 +266,7 @@
   },
   {
    "country": "Portugal",
-   "n_docs": 6366,
+   "n_docs": 6363,
    "n_parties": 1,
    "first_year": 2019,
    "last_year": 2025,
@@ -282,7 +282,7 @@
   },
   {
    "country": "Slovakia",
-   "n_docs": 6461,
+   "n_docs": 6468,
    "n_parties": 3,
    "first_year": 2016,
    "last_year": 2026,
@@ -290,7 +290,7 @@
   },
   {
    "country": "Slovenia",
-   "n_docs": 10648,
+   "n_docs": 10645,
    "n_parties": 5,
    "first_year": 2014,
    "last_year": 2026,
@@ -298,7 +298,7 @@
   },
   {
    "country": "Spain",
-   "n_docs": 47659,
+   "n_docs": 43594,
    "n_parties": 4,
    "first_year": 2010,
    "last_year": 2025,
@@ -314,7 +314,7 @@
   },
   {
    "country": "Switzerland",
-   "n_docs": 6112,
+   "n_docs": 6052,
    "n_parties": 5,
    "first_year": 2010,
    "last_year": 2026,
@@ -322,7 +322,7 @@
   },
   {
    "country": "UK",
-   "n_docs": 34090,
+   "n_docs": 33784,
    "n_parties": 8,
    "first_year": 2010,
    "last_year": 2026,
@@ -331,28 +331,52 @@
  ],
  "documents_by_year": [
   {
+   "year": 2004,
+   "n": 74
+  },
+  {
+   "year": 2005,
+   "n": 6782
+  },
+  {
+   "year": 2006,
+   "n": 7150
+  },
+  {
+   "year": 2007,
+   "n": 8515
+  },
+  {
+   "year": 2008,
+   "n": 7405
+  },
+  {
+   "year": 2009,
+   "n": 8206
+  },
+  {
    "year": 2010,
-   "n": 30765
+   "n": 30749
   },
   {
    "year": 2011,
-   "n": 30207
+   "n": 30199
   },
   {
    "year": 2012,
-   "n": 30701
+   "n": 30698
   },
   {
    "year": 2013,
-   "n": 31031
+   "n": 31015
   },
   {
    "year": 2014,
-   "n": 34994
+   "n": 34991
   },
   {
    "year": 2015,
-   "n": 39990
+   "n": 39989
   },
   {
    "year": 2016,
@@ -360,43 +384,43 @@
   },
   {
    "year": 2017,
-   "n": 40190
+   "n": 40192
   },
   {
    "year": 2018,
-   "n": 41252
+   "n": 40641
   },
   {
    "year": 2019,
-   "n": 37588
+   "n": 36871
   },
   {
    "year": 2020,
-   "n": 45589
+   "n": 44089
   },
   {
    "year": 2021,
-   "n": 43826
+   "n": 42928
   },
   {
    "year": 2022,
-   "n": 48498
+   "n": 48483
   },
   {
    "year": 2023,
-   "n": 35285
+   "n": 35045
   },
   {
    "year": 2024,
-   "n": 38833
+   "n": 38347
   },
   {
    "year": 2025,
-   "n": 41088
+   "n": 40653
   },
   {
    "year": 2026,
-   "n": 8824
+   "n": 8827
   }
  ],
  "parties": [
@@ -407,8 +431,8 @@
    "short": "FPO",
    "name": "Freedom Party of Austria",
    "family": "Right-wing",
-   "n_docs": 44780,
-   "first": "2010-01-01",
+   "n_docs": 53026,
+   "first": "2006-11-17",
    "last": "2026-11-17"
   },
   {
@@ -418,19 +442,8 @@
    "short": "SPO",
    "name": "Social Democratic Party of Austria",
    "family": "Social democracy",
-   "n_docs": 27686,
-   "first": "2010-01-04",
-   "last": "2026-11-17"
-  },
-  {
-   "country": "Austria",
-   "party": "austrian_people's_party",
-   "parlgov_id": "1013",
-   "short": "OVP",
-   "name": "Austrian People's Party",
-   "family": "Christian democracy",
-   "n_docs": 10325,
-   "first": "2010-01-04",
+   "n_docs": 43050,
+   "first": "2004-09-08",
    "last": "2026-11-17"
   },
   {
@@ -440,8 +453,19 @@
    "short": "Gruene",
    "name": "The Greens -- The Green Alternative",
    "family": "Green/Ecologist",
-   "n_docs": 15240,
-   "first": "2010-01-01",
+   "n_docs": 22862,
+   "first": "2004-11-17",
+   "last": "2026-11-17"
+  },
+  {
+   "country": "Austria",
+   "party": "austrian_people's_party",
+   "parlgov_id": "1013",
+   "short": "OVP",
+   "name": "Austrian People's Party",
+   "family": "Christian democracy",
+   "n_docs": 16904,
+   "first": "2005-01-12",
    "last": "2026-11-17"
   },
   {
@@ -572,7 +596,7 @@
    "short": "SPH",
    "name": "Social Democratic Party of Croatia",
    "family": "Social democracy",
-   "n_docs": 5512,
+   "n_docs": 5511,
    "first": "2010-01-03",
    "last": "2025-12-23"
   },
@@ -671,7 +695,7 @@
    "short": "ODS",
    "name": "Civic Democratic Party",
    "family": "Conservative",
-   "n_docs": 2867,
+   "n_docs": 2870,
    "first": "2017-05-12",
    "last": "2025-12-18"
   },
@@ -683,7 +707,7 @@
    "name": "Freedom and Direct Democracy ",
    "family": "Right-wing",
    "n_docs": 1924,
-   "first": "2020-01-08",
+   "first": "2019-09-24",
    "last": "2025-12-30"
   },
   {
@@ -715,7 +739,7 @@
    "short": "ANO",
    "name": "Action of Dissatisfied Citizens 2011",
    "family": "Liberal",
-   "n_docs": 566,
+   "n_docs": 565,
    "first": "2021-01-24",
    "last": "2025-12-31"
   },
@@ -858,7 +882,7 @@
    "short": "SDE|M",
    "name": "Social Democratic Party | Moderates",
    "family": "Social democracy",
-   "n_docs": 2047,
+   "n_docs": 2046,
    "first": "2013-02-05",
    "last": "2025-12-30"
   },
@@ -968,7 +992,7 @@
    "short": "PCF",
    "name": "French Communist Party",
    "family": "Communist/Socialist",
-   "n_docs": 2558,
+   "n_docs": 2557,
    "first": "2010-01-24",
    "last": "2026-06-24"
   },
@@ -1029,25 +1053,25 @@
   },
   {
    "country": "Germany",
+   "party": "alternative_for_germany",
+   "parlgov_id": "2253",
+   "short": "AfD",
+   "name": "Alternative for Germany",
+   "family": "Right-wing",
+   "n_docs": 13355,
+   "first": "2013-07-23",
+   "last": "2026-11-17"
+  },
+  {
+   "country": "Germany",
    "party": "pds_|_the_left",
    "parlgov_id": "791",
    "short": "PDS|Li",
    "name": "PDS | The Left",
    "family": "Communist/Socialist",
-   "n_docs": 12146,
-   "first": "2010-01-02",
+   "n_docs": 12467,
+   "first": "2005-09-28",
    "last": "2026-11-16"
-  },
-  {
-   "country": "Germany",
-   "party": "christian_democratic_union_/_christian_social_union",
-   "parlgov_id": "1727",
-   "short": "CDU+CSU",
-   "name": "Christian Democratic Union / Christian Social Union",
-   "family": "Christian democracy",
-   "n_docs": 10803,
-   "first": "2010-01-03",
-   "last": "2026-02-23"
   },
   {
    "country": "Germany",
@@ -1058,6 +1082,17 @@
    "family": "Liberal",
    "n_docs": 11390,
    "first": "2010-01-04",
+   "last": "2026-02-23"
+  },
+  {
+   "country": "Germany",
+   "party": "christian_democratic_union_/_christian_social_union",
+   "parlgov_id": "1727",
+   "short": "CDU+CSU",
+   "name": "Christian Democratic Union / Christian Social Union",
+   "family": "Christian democracy",
+   "n_docs": 10803,
+   "first": "2010-01-03",
    "last": "2026-02-23"
   },
   {
@@ -1081,28 +1116,6 @@
    "n_docs": 10116,
    "first": "2010-01-02",
    "last": "2026-02-18"
-  },
-  {
-   "country": "Germany",
-   "party": "alternative_for_germany",
-   "parlgov_id": "2253",
-   "short": "AfD",
-   "name": "Alternative for Germany",
-   "family": "Right-wing",
-   "n_docs": 13355,
-   "first": "2013-07-23",
-   "last": "2026-11-17"
-  },
-  {
-   "country": "Germany",
-   "party": "christian_democratic_union",
-   "parlgov_id": "808",
-   "short": "CDU",
-   "name": "Christian Democratic Union",
-   "family": "Christian democracy",
-   "n_docs": 0,
-   "first": "2019-12-04",
-   "last": "2022-12-31"
   },
   {
    "country": "Greece",
@@ -1188,7 +1201,7 @@
    "short": "MM",
    "name": "Momentum Movement",
    "family": "Conservative",
-   "n_docs": 955,
+   "n_docs": 952,
    "first": "2017-03-16",
    "last": "2025-12-13"
   },
@@ -1210,7 +1223,7 @@
    "short": "Sam",
    "name": "Social Democratic Alliance",
    "family": "Social democracy",
-   "n_docs": 1327,
+   "n_docs": 1328,
    "first": "2014-02-28",
    "last": "2026-02-19"
   },
@@ -1265,9 +1278,9 @@
    "short": "FF",
    "name": "Fianna Fail",
    "family": "Conservative",
-   "n_docs": 7484,
+   "n_docs": 6885,
    "first": "2015-06-15",
-   "last": "2025-12-31"
+   "last": "2025-12-16"
   },
   {
    "country": "Ireland",
@@ -1276,9 +1289,9 @@
    "short": "FG",
    "name": "Fine Gael (Familiy of the Irish)",
    "family": "Christian democracy",
-   "n_docs": 5271,
+   "n_docs": 5442,
    "first": "2013-03-04",
-   "last": "2025-12-16"
+   "last": "2025-12-31"
   },
   {
    "country": "Ireland",
@@ -1375,7 +1388,7 @@
    "short": "DP",
    "name": "Labour Party",
    "family": "Liberal",
-   "n_docs": 5129,
+   "n_docs": 5130,
    "first": "2010-01-04",
    "last": "2026-02-16"
   },
@@ -1419,7 +1432,7 @@
    "short": "AR|ADR",
    "name": "Action Committee Pensions | Alternative Democratic Reform Party",
    "family": "Conservative",
-   "n_docs": 4373,
+   "n_docs": 4378,
    "first": "2013-01-04",
    "last": "2026-03-12"
   },
@@ -1430,7 +1443,7 @@
    "short": "Greng",
    "name": "The Greens",
    "family": "Green/Ecologist",
-   "n_docs": 3154,
+   "n_docs": 3171,
    "first": "2011-05-26",
    "last": "2026-03-11"
   },
@@ -1496,7 +1509,7 @@
    "short": "PvdA",
    "name": "Labour Party",
    "family": "Social democracy",
-   "n_docs": 4702,
+   "n_docs": 4703,
    "first": "2010-01-04",
    "last": "2022-11-03"
   },
@@ -1518,7 +1531,7 @@
    "short": "PVV",
    "name": "Party for Freedom",
    "family": "Right-wing",
-   "n_docs": 2378,
+   "n_docs": 2381,
    "first": "2010-01-10",
    "last": "2026-02-26"
   },
@@ -1551,7 +1564,7 @@
    "short": "SGP",
    "name": "Political Reformed Party",
    "family": "Conservative",
-   "n_docs": 1002,
+   "n_docs": 1001,
    "first": "2012-01-05",
    "last": "2019-02-07"
   },
@@ -1650,7 +1663,7 @@
    "short": "SLD",
    "name": "Democratic Left Alliance",
    "family": "Social democracy",
-   "n_docs": 4855,
+   "n_docs": 4856,
    "first": "2010-02-13",
    "last": "2022-04-19"
   },
@@ -1661,9 +1674,9 @@
    "short": "NL",
    "name": "New Left (Nowa Lewica)",
    "family": "Social democracy",
-   "n_docs": 4855,
-   "first": "2010-02-13",
-   "last": "2022-04-19"
+   "n_docs": 4461,
+   "first": "2017-05-01",
+   "last": "2026-02-27"
   },
   {
    "country": "Poland",
@@ -1683,7 +1696,7 @@
    "short": "PO",
    "name": "Civic Platform",
    "family": "Conservative",
-   "n_docs": 2379,
+   "n_docs": 2380,
    "first": "2011-11-08",
    "last": "2026-01-30"
   },
@@ -1705,7 +1718,7 @@
    "short": "KORWIN",
    "name": "Coalition for the Renewal of the Republic -- Liberty and Hope",
    "family": "Conservative",
-   "n_docs": 925,
+   "n_docs": 923,
    "first": "2015-01-20",
    "last": "2018-05-08"
   },
@@ -1738,9 +1751,9 @@
    "short": "N",
    "name": "Modern",
    "family": "Liberal",
-   "n_docs": 178,
+   "n_docs": 69,
    "first": "2017-02-14",
-   "last": "2023-10-05"
+   "last": "2022-01-10"
   },
   {
    "country": "Portugal",
@@ -1749,7 +1762,7 @@
    "short": "PS",
    "name": "Socialist Party",
    "family": "Social democracy",
-   "n_docs": 6366,
+   "n_docs": 6363,
    "first": "2019-10-15",
    "last": "2025-12-27"
   },
@@ -1804,7 +1817,7 @@
    "short": "Smer",
    "name": "Direction -- Social Democracy",
    "family": "Social democracy",
-   "n_docs": 3773,
+   "n_docs": 3780,
    "first": "2024-01-03",
    "last": "2026-06-03"
   },
@@ -1848,7 +1861,7 @@
    "short": "L",
    "name": "The Left",
    "family": "Communist/Socialist",
-   "n_docs": 2178,
+   "n_docs": 2175,
    "first": "2014-05-25",
    "last": "2025-12-28"
   },
@@ -1892,7 +1905,7 @@
    "short": "AP-P",
    "name": "People's Alliance-Party",
    "family": "Conservative",
-   "n_docs": 21285,
+   "n_docs": 17220,
    "first": "2010-01-04",
    "last": "2025-12-30"
   },
@@ -1969,7 +1982,7 @@
    "short": "MP",
    "name": "Greens",
    "family": "Green/Ecologist",
-   "n_docs": 1760,
+   "n_docs": 1758,
    "first": "2010-01-03",
    "last": "2022-12-15"
   },
@@ -1980,7 +1993,7 @@
    "short": "SAP",
    "name": "Social Democrats",
    "family": "Social democracy",
-   "n_docs": 1666,
+   "n_docs": 1667,
    "first": "2017-01-08",
    "last": "2026-02-20"
   },
@@ -2013,7 +2026,7 @@
    "short": "Fi",
    "name": "Feminist Initiative",
    "family": "Special issue",
-   "n_docs": 975,
+   "n_docs": 976,
    "first": "2010-01-07",
    "last": "2022-12-27"
   },
@@ -2068,8 +2081,8 @@
    "short": "SVP-UDC",
    "name": "Swiss People's Party",
    "family": "Agrarian",
-   "n_docs": 988,
-   "first": "2010-01-20",
+   "n_docs": 928,
+   "first": "2010-04-08",
    "last": "2026-02-24"
   },
   {
@@ -2090,9 +2103,9 @@
    "short": "Lab",
    "name": "Labour",
    "family": "Social democracy",
-   "n_docs": 12606,
+   "n_docs": 12529,
    "first": "2010-01-04",
-   "last": "2025-12-17"
+   "last": "2024-09-25"
   },
   {
    "country": "UK",
@@ -2101,7 +2114,7 @@
    "short": "SNP",
    "name": "Scottish National Party",
    "family": "Social democracy",
-   "n_docs": 4994,
+   "n_docs": 4995,
    "first": "2010-01-02",
    "last": "2022-12-23"
   },
@@ -2123,7 +2136,7 @@
    "short": "GP",
    "name": "Green Party",
    "family": "Green/Ecologist",
-   "n_docs": 3904,
+   "n_docs": 3601,
    "first": "2010-01-02",
    "last": "2026-02-21"
   },
@@ -2156,9 +2169,9 @@
    "short": "Lib",
    "name": "Liberals",
    "family": "Liberal",
-   "n_docs": 1393,
+   "n_docs": 1467,
    "first": "2010-07-14",
-   "last": "2024-12-31"
+   "last": "2025-12-17"
   },
   {
    "country": "UK",
@@ -2167,20 +2180,9 @@
    "short": "Con",
    "name": "Conservatives",
    "family": "Conservative",
-   "n_docs": 1444,
+   "n_docs": 1443,
    "first": "2010-01-02",
    "last": "2025-12-23"
-  },
-  {
-   "country": "Poland",
-   "party": "nowa_lewica",
-   "parlgov_id": "99999",
-   "short": "NL",
-   "name": "Nowa Lewica",
-   "family": "Social democracy",
-   "n_docs": 4461,
-   "first": "2017-05-01",
-   "last": "2026-02-27"
   }
  ],
  "source": "data/v1fix/aggregated"
