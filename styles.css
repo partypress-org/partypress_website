@@ -939,6 +939,45 @@ a.research-using-title:hover {
   color: var(--muted);
 }
 
+.research-using-pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  max-width: 48rem;
+}
+
+.research-using-pages button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.125rem;
+  min-height: 2.125rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 4px;
+  border: 1px solid var(--muted);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.research-using-pages button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.research-using-pages button[aria-current="page"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.research-using-pages button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 .site-footer {
   padding: 1.5rem 2rem;
   border-top: 1px solid var(--border);

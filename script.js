@@ -26,7 +26,10 @@
 (function () {
   var section = document.getElementById('research-using');
   var list = document.getElementById('research-using-list');
+  var pager = document.getElementById('research-using-pages');
   if (!section || !list) return;
+
+  var PAGE_SIZE = 5;
 
   var PARTYPRESS_KEY = '07_partypress-database_rap_2023';
 
@@ -85,13 +88,28 @@
     });
     var kept = [];
     items.forEach(function (item) {
-      var duplicate = kept.some(function (existing) {
-        if (existing.key === item.key) return true;
-        var shorter = existing.key.length < item.key.length ? existing.key : item.key;
-        var longer = existing.key.length < item.key.length ? item.key : existing.key;
-        return shorter.length >= 40 && longer.indexOf(shorter) === 0;
-      });
-      if (!duplicate) kept.push(item);
+      item.names = splitAuthorNames(item.work);
+      var existing = null;
+      for (var i = 0; i < kept.length; i++) {
+        var other = kept[i];
+        var same = other.key === item.key;
+        if (!same) {
+          var shorter = other.key.length < item.key.length ? other.key : item.key;
+          var longer = other.key.length < item.key.length ? item.key : other.key;
+          same = shorter.length >= 40 && longer.indexOf(shorter) === 0;
+        }
+        if (same) {
+          existing = other;
+          break;
+        }
+      }
+      if (!existing) {
+        kept.push(item);
+        return;
+      }
+      existing.names = mergeAuthorNames(existing.names, item.names);
+      if (!existing.work.url && item.work.url) existing.work.url = item.work.url;
+      if (!existing.work.year && item.work.year) existing.work.year = item.work.year;
     });
     kept.sort(function (a, b) {
       var yearA = a.work.year || 0;
@@ -99,29 +117,63 @@
       if (yearB !== yearA) return yearB - yearA;
       return String(a.work.title).localeCompare(String(b.work.title));
     });
-    return kept.map(function (item) { return item.work; });
+    return kept.map(function (item) {
+      item.work.resolvedAuthors = item.names;
+      return item.work;
+    });
+  }
+
+  function personKey(name) {
+    var bits = String(name).replace(/\./g, '').split(/\s+/).filter(Boolean);
+    if (!bits.length) return '';
+    return bits[bits.length - 1].toLowerCase() + '|' + bits[0].charAt(0).toLowerCase();
+  }
+
+  function splitAuthorNames(work) {
+    var names = [];
+    (work.authors || []).forEach(function (author) {
+      String(author && author.name || '').split(/[,，;；]/).forEach(function (part) {
+        var name = part.replace(/\s*(?:…|\.{3})\s*$/, '').trim();
+        if (name.length < 2 || /descriptor/i.test(name)) return;
+        names.push(name);
+      });
+    });
+    return names;
+  }
+
+  function mergeAuthorNames(base, extra) {
+    var out = base.slice();
+    var seen = {};
+    out.forEach(function (name) { seen[personKey(name)] = true; });
+    extra.forEach(function (name) {
+      var key = personKey(name);
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      out.push(name);
+    });
+    return out;
   }
 
   function displayTitle(title) {
     return cleanTitle(title);
   }
 
-  function authorNames(work) {
-    var names = (work.authors || []).map(function (author) {
-      return author && author.name ? String(author.name).replace(/\s*…\s*$/, '').trim() : '';
-    }).filter(Boolean);
+  function formatAuthors(names) {
+    if (!names || !names.length) return '';
     if (names.length === 1) return names[0];
     if (names.length === 2) return names[0] + ' and ' + names[1];
-    if (names.length > 2) return names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
-    return '';
+    return names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
   }
 
   function doiFromUrl(url) {
     if (!url) return '';
-    var match = String(url).match(/10\.\d{4,9}\/[^\s?#]+/i);
+    var text = String(url);
+    var match = text.match(/10\.\d{4,9}\/[^\s?#]+/i);
     if (match) return match[0].replace(/[).,;]+$/, '').replace(/\.pdf$/i, '');
-    var nature = String(url).match(/nature\.com\/articles\/([A-Za-z0-9.\-]+)/i);
+    var nature = text.match(/nature\.com\/articles\/([A-Za-z0-9.\-]+)/i);
     if (nature) return '10.1038/' + nature[1];
+    var lancet = text.match(/PII(S\d{4}-\d{4}\([^)]+\)[^/?#]*)/i);
+    if (lancet) return '10.1016/' + lancet[1].toLowerCase();
     return '';
   }
 
@@ -204,6 +256,64 @@
     });
   }
 
+  function authorsByDoi(works) {
+    var dois = [];
+    var seen = {};
+    works.forEach(function (work) {
+      var doi = doiFromUrl(work.url);
+      var key = doi.toLowerCase();
+      if (!doi || seen[key]) return;
+      seen[key] = true;
+      dois.push(doi);
+    });
+    if (!dois.length) return Promise.resolve({});
+    var requests = [];
+    for (var start = 0; start < dois.length; start += 25) {
+      var slice = dois.slice(start, start + 25);
+      var filter = slice.map(function (doi) { return 'doi:' + doi; }).join(',');
+      var url = 'https://api.crossref.org/works?rows=' + slice.length + '&select=DOI,author&mailto=cornelius.erfort@uni-wh.de&filter=' + encodeURIComponent(filter);
+      var lookupSignal = typeof AbortSignal !== 'undefined' && AbortSignal.timeout
+        ? AbortSignal.timeout(8000)
+        : undefined;
+      requests.push(
+        fetch(url, { signal: lookupSignal })
+          .then(function (response) {
+            if (!response.ok) throw new Error('author lookup failed');
+            return response.json();
+          })
+          .then(function (data) {
+            var map = {};
+            var items = (data && data.message && data.message.items) || [];
+            items.forEach(function (item) {
+              var names = (item.author || []).map(function (author) {
+                var given = author.given ? String(author.given).trim() : '';
+                var family = author.family ? String(author.family).trim() : '';
+                if (given && family) return given + ' ' + family;
+                return family || given || (author.name ? String(author.name).trim() : '');
+              }).filter(Boolean);
+              if (names.length && item.DOI) map[String(item.DOI).toLowerCase()] = names;
+            });
+            return map;
+          })
+          .catch(function () { return {}; })
+      );
+    }
+    return Promise.all(requests).then(function (maps) {
+      var combined = {};
+      maps.forEach(function (map) {
+        Object.keys(map).forEach(function (doi) { combined[doi] = map[doi]; });
+      });
+      return combined;
+    });
+  }
+
+  function authorsFor(work, byDoi) {
+    var scholar = work.resolvedAuthors || splitAuthorNames(work);
+    var doi = doiFromUrl(work.url).toLowerCase();
+    var published = doi && byDoi[doi];
+    if (published && published.length >= scholar.length) return published;
+    return scholar;
+  }
   function journalFor(work, byDoi) {
     var doi = doiFromUrl(work.url).toLowerCase();
     if (doi && byDoi[doi]) return byDoi[doi];
@@ -217,41 +327,94 @@
     item.appendChild(line);
   }
 
-  function render(works, byDoi) {
+  var prepared = [];
+  var currentPage = 0;
+
+  function renderItem(entry) {
+    var work = entry.work;
+    var item = document.createElement('li');
+    var title = displayTitle(work.title);
+    var heading;
+    if (work.url) {
+      heading = document.createElement('a');
+      heading.href = work.url;
+      heading.target = '_blank';
+      heading.rel = 'noopener';
+    } else {
+      heading = document.createElement('span');
+    }
+    heading.className = 'research-using-title';
+    heading.textContent = title;
+    item.appendChild(heading);
+    var people = formatAuthors(entry.authors);
+    var journal = entry.journal;
+    if (journal) {
+      if (people) addMeta(item, people);
+      var venue = document.createElement('p');
+      venue.className = 'research-using-meta';
+      var name = document.createElement('em');
+      name.textContent = journal;
+      venue.appendChild(name);
+      if (work.year) venue.appendChild(document.createTextNode(', ' + work.year));
+      item.appendChild(venue);
+    } else if (people && work.year) {
+      addMeta(item, people + ' · ' + work.year);
+    } else if (people || work.year) {
+      addMeta(item, people || String(work.year));
+    }
+    list.appendChild(item);
+  }
+
+  function renderPager(total) {
+    if (!pager) return;
+    var pages = Math.ceil(total / PAGE_SIZE);
+    pager.textContent = '';
+    if (pages <= 1) {
+      pager.hidden = true;
+      return;
+    }
+    pager.hidden = false;
+
+    function addButton(label, index, opts) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      if (opts && opts.current) button.setAttribute('aria-current', 'page');
+      if (opts && opts.disabled) button.disabled = true;
+      if (index != null) {
+        button.addEventListener('click', function () {
+          currentPage = index;
+          showPage(true);
+        });
+      }
+      pager.appendChild(button);
+    }
+
+    addButton('Previous', currentPage - 1, { disabled: currentPage === 0 });
+    for (var i = 0; i < pages; i++) {
+      addButton(String(i + 1), i, { current: i === currentPage });
+    }
+    addButton('Next', currentPage + 1, { disabled: currentPage >= pages - 1 });
+  }
+
+  function showPage(scroll) {
+    var start = currentPage * PAGE_SIZE;
     list.textContent = '';
-    works.forEach(function (work) {
-      var item = document.createElement('li');
-      var title = displayTitle(work.title);
-      var heading;
-      if (work.url) {
-        heading = document.createElement('a');
-        heading.href = work.url;
-        heading.target = '_blank';
-        heading.rel = 'noopener';
-      } else {
-        heading = document.createElement('span');
-      }
-      heading.className = 'research-using-title';
-      heading.textContent = title;
-      item.appendChild(heading);
-      var people = authorNames(work);
-      var journal = journalFor(work, byDoi || {});
-      if (journal) {
-        if (people) addMeta(item, people);
-        var venue = document.createElement('p');
-        venue.className = 'research-using-meta';
-        var name = document.createElement('em');
-        name.textContent = journal;
-        venue.appendChild(name);
-        if (work.year) venue.appendChild(document.createTextNode(', ' + work.year));
-        item.appendChild(venue);
-      } else if (people && work.year) {
-        addMeta(item, people + ' · ' + work.year);
-      } else if (people || work.year) {
-        addMeta(item, people || String(work.year));
-      }
-      list.appendChild(item);
+    prepared.slice(start, start + PAGE_SIZE).forEach(renderItem);
+    renderPager(prepared.length);
+    if (scroll) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function render(works, journals, authorMap) {
+    prepared = works.map(function (work) {
+      return {
+        work: work,
+        authors: authorsFor(work, authorMap || {}),
+        journal: journalFor(work, journals || {})
+      };
     });
+    currentPage = 0;
+    showPage(false);
     section.hidden = false;
   }
 
@@ -272,8 +435,8 @@
       if (!entry) throw new Error('partypress citations missing');
       var works = dedupe(entry.citing_works);
       if (!works.length) throw new Error('no citing articles');
-      return journalsByDoi(works).then(function (byDoi) {
-        render(works, byDoi);
+      return Promise.all([journalsByDoi(works), authorsByDoi(works)]).then(function (result) {
+        render(works, result[0], result[1]);
       });
     })
     .catch(function () {
