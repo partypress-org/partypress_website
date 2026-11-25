@@ -193,14 +193,14 @@ body {
   flex-shrink: 0;
   width: fit-content;
   max-width: 100%;
-  height: 168px;
+  height: clamp(72px, 22vw, 168px);
   overflow: hidden;
   line-height: 0;
 }
 
 .foundation-v1-logo-frame .foundation-v1-logo {
   display: block;
-  height: 168px;
+  height: clamp(72px, 22vw, 168px);
   width: auto;
   max-height: 100%;
   margin: 0;
@@ -282,7 +282,7 @@ main > h1 {
 
 .version-logo img {
   display: block;
-  height: 168px;
+  height: clamp(72px, 22vw, 168px);
   width: auto;
 }
 
@@ -864,20 +864,21 @@ h2 {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 2rem;
+  gap: clamp(0.75rem, 4vw, 2rem);
 }
 
 .supported-logo {
   display: block;
-  flex-shrink: 0;
-  width: 100px;
+  flex-shrink: 1;
+  min-width: 0;
+  width: clamp(56px, 22vw, 100px);
 }
 
 .supported-logo img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 50px;
+  max-height: clamp(32px, 10vw, 50px);
   object-fit: contain;
   opacity: 0.85;
 }
@@ -886,18 +887,56 @@ h2 {
   opacity: 1;
 }
 
-@media (max-width: 400px) {
-  .supported-logos {
-    gap: 1rem;
-  }
+.research-using {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
 
-  .supported-logo {
-    width: 72px;
-  }
+.research-using-intro {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: -0.25rem 0 1.25rem;
+  max-width: 48rem;
+}
 
-  .supported-logo img {
-    max-height: 44px;
-  }
+.research-using-intro a {
+  color: var(--accent);
+}
+
+.research-using-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 48rem;
+}
+
+.research-using-list li {
+  margin: 0;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.research-using-list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.research-using-title {
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+
+a.research-using-title:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.research-using-meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
 }
 
 .site-footer {
