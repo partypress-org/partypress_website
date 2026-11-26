@@ -320,15 +320,55 @@
     return journalFromUrl(work.url);
   }
 
-  function addMeta(item, text) {
-    var line = document.createElement('p');
-    line.className = 'research-using-meta';
-    line.textContent = text;
-    item.appendChild(line);
-  }
-
   var prepared = [];
   var currentPage = 0;
+
+  function overflows(el) {
+    return el.scrollHeight > el.clientHeight + 1;
+  }
+
+  function fitTitle(el) {
+    if (overflows(el)) el.classList.add('is-compact');
+    if (overflows(el)) {
+      el.classList.add('is-clamped');
+      el.title = el.textContent;
+    }
+  }
+
+  function authorLabel(names, count) {
+    if (count >= names.length) return formatAuthors(names);
+    if (count <= 1) return names[0] + ' et al.';
+    return names.slice(0, count).join(', ') + ', et al.';
+  }
+
+  function fitAuthors(el, names) {
+    if (!names.length || el.clientWidth < 1) {
+      el.textContent = formatAuthors(names);
+      return;
+    }
+    el.title = formatAuthors(names);
+    function fits(count) {
+      el.textContent = authorLabel(names, count);
+      return el.scrollWidth <= el.clientWidth + 1;
+    }
+    if (fits(names.length)) {
+      el.removeAttribute('title');
+      return;
+    }
+    var low = 1;
+    var high = names.length - 1;
+    var best = 1;
+    while (low <= high) {
+      var mid = Math.floor((low + high) / 2);
+      if (fits(mid)) {
+        best = mid;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+    el.textContent = authorLabel(names, best);
+  }
 
   function renderItem(entry) {
     var work = entry.work;
@@ -346,23 +386,25 @@
     heading.className = 'research-using-title';
     heading.textContent = title;
     item.appendChild(heading);
-    var people = formatAuthors(entry.authors);
-    var journal = entry.journal;
-    if (journal) {
-      if (people) addMeta(item, people);
-      var venue = document.createElement('p');
-      venue.className = 'research-using-meta';
+
+    var authors = document.createElement('p');
+    authors.className = 'research-using-meta';
+    item.appendChild(authors);
+
+    var venue = document.createElement('p');
+    venue.className = 'research-using-meta';
+    if (entry.journal) {
       var name = document.createElement('em');
-      name.textContent = journal;
+      name.textContent = entry.journal;
       venue.appendChild(name);
       if (work.year) venue.appendChild(document.createTextNode(', ' + work.year));
-      item.appendChild(venue);
-    } else if (people && work.year) {
-      addMeta(item, people + ' · ' + work.year);
-    } else if (people || work.year) {
-      addMeta(item, people || String(work.year));
+    } else if (work.year) {
+      venue.textContent = String(work.year);
     }
+    item.appendChild(venue);
     list.appendChild(item);
+    fitTitle(heading);
+    fitAuthors(authors, entry.authors || []);
   }
 
   function renderPager(total) {
@@ -405,6 +447,13 @@
     if (scroll) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    if (!prepared.length || section.hidden) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { showPage(false); }, 150);
+  });
+
   function render(works, journals, authorMap) {
     prepared = works.map(function (work) {
       return {
@@ -414,8 +463,8 @@
       };
     });
     currentPage = 0;
-    showPage(false);
     section.hidden = false;
+    showPage(false);
   }
 
   var signal = typeof AbortSignal !== 'undefined' && AbortSignal.timeout
