@@ -210,6 +210,7 @@ body {
 
 main {
   flex: 1;
+  min-width: 0;
   max-width: 72rem;
   margin: 0 auto;
   padding: 2.5rem 2rem 3rem;
@@ -913,8 +914,11 @@ h2 {
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 100%;
+  min-width: 0;
   max-width: 48rem;
   height: calc(5 * var(--item-h));
+  overflow: hidden;
 }
 
 .research-using-list li {

@@ -341,18 +341,23 @@
     return names.slice(0, count).join(', ') + ', et al.';
   }
 
+  function textWidth(el, text) {
+    if (!textWidth.canvas) textWidth.canvas = document.createElement('canvas');
+    var ctx = textWidth.canvas.getContext('2d');
+    var style = getComputedStyle(el);
+    ctx.font = style.font;
+    return ctx.measureText(text).width;
+  }
+
   function fitAuthors(el, names) {
-    if (!names.length || el.clientWidth < 1) {
-      el.textContent = formatAuthors(names);
-      return;
-    }
-    el.title = formatAuthors(names);
+    if (!names.length) return;
+    var max = el.clientWidth || list.clientWidth;
+    if (max < 1) max = 520;
     function fits(count) {
-      el.textContent = authorLabel(names, count);
-      return el.scrollWidth <= el.clientWidth + 1;
+      return textWidth(el, authorLabel(names, count)) <= max - 1;
     }
-    if (fits(names.length)) {
-      el.removeAttribute('title');
+    if (names.length === 1 || fits(names.length)) {
+      el.textContent = formatAuthors(names);
       return;
     }
     var low = 1;
